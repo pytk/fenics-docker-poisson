@@ -31,8 +31,17 @@ f_code = sym.printing.ccode(f)
 print('u =', u_code)
 print('f =', f_code)
 
+
+# create mesh
+xin = 0
+yin = 0
+xfi = 100
+yfi = 30
+nx = 100
+ny = 30
+
 # Create mesh and define function space
-mesh = UnitSquareMesh(8, 8)
+mesh = RectangleMesh(Point(xin, yin), Point(xfi, yfi), nx, ny)
 V = FunctionSpace(mesh, 'P', 1)
 
 # Define boundary condition
@@ -51,9 +60,6 @@ F = q(u)*dot(grad(u), grad(v))*dx - f*v*dx
 
 # Compute solution
 solve(F == 0, u, bc)
-
-arr = np.array(u.vector()[:])
-np.reshape(arr, (9, 9))
 
 # output potential calculated with FEniCS
 """
@@ -75,9 +81,9 @@ for i in range(mesh.num_vertices()):
     x = np.append(x, grid[i][0])
     y = np.append(y, grid[i][1])
     z = np.append(z, u_array[i])
-X = np.reshape(x, (9,9)) 
-Y = np.reshape(y, (9,9))
-Z = np.reshape(z, (9,9))
+X = np.reshape(x, (nx+1,ny+1)) 
+Y = np.reshape(y, (nx+1,ny+1))
+Z = np.reshape(z, (nx+1,ny+1))
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 surf = ax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
