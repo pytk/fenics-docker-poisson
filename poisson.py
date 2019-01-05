@@ -10,6 +10,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
+from schrodinger import schrodinger
 
 # Warning: from fenics import * will import both `sym` and
 # `q` from FEniCS. We therefore import FEniCS first and then
@@ -91,6 +92,8 @@ fig.colorbar(surf)
 ax.set_title("Electro Static Potential by FEniCS(PDEs)")
 fig.show()
 plt.savefig("non-liner-poisson3d.png")
+
+
 
 # Compute maximum error at vertices. This computation illustrates
 # an alternative to using compute_vertex_values as in poisson.py.
