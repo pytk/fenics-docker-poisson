@@ -51,3 +51,4 @@ if __name__ == "__main__":
 
     interval_mesh = device.IntervalMeshCreate()
     electric_field, wavefunction = schrodinger_fenics.schrodinger(interval_mesh, potential)
+    plotter.plot_wave_function(device, rectangle_mesh, wavefunction)

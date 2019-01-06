@@ -151,7 +151,7 @@ def schrodinger(mesh, potentials):
             plot(u)
             plt.savefig("schrodinger-fenics.png")
 
-        for i in range(0,2):
+        for i in range(0,subband_number):
             eigen_value[i][index][:] = eigenvalue[i]
             eigen_vector[i][index][:] = eigenvector[i]
         """
@@ -162,12 +162,17 @@ def schrodinger(mesh, potentials):
 
     electric_field = np.empty((subband_number, potentials.shape[0] ,potentials.shape[1]))
 
-    for i in range(0,2):
+    for i in range(0,subband_number):
         arr = np.array(eigen_vector[i][:][:])
         arr = arr.T
         eigen_vector[i][:][:] = arr
+
         for (index, energy) in enumerate(eigen_value[i][:][:]):
             electric_field[i][index][:] = np.gradient(eigen_value[i][index][:])
+
+        arr = np.array(electric_field[i][:][:])
+        arr = arr.T
+        electric_field[i][:][:] = arr
 
     return electric_field, eigen_vector
 
