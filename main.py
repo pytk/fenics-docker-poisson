@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from fenics import *
 
 import schrodinger_fenics
-import poisson
+import poisson_test
 import plotter
 
 class Device(object):
@@ -18,6 +18,8 @@ class Device(object):
         self.yfi = yfi
         self.nx = nx
         self.ny = ny
+        self.dx = xfi / nx
+        self.dy = yfi / ny
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.yin, self.yfi)
@@ -27,20 +29,76 @@ class Device(object):
         mesh = RectangleMesh(Point(self.xin, self.yin), Point(self.xfi, self.yfi), self.nx, self.ny)
         return mesh
 
+    def craeteChargeDistribution(self, doner):
+        """
+        Args
+        ------
+        doner - Array
+        doner[  {xi: ..., xf: ..., yi: ..., yf: ..., nplus: ...} ]
+        """
+        temp = (self.nx + 1) * (self.ny + 1)
+        arr = np.arange(temp).reshape(self.nx+1, self.ny+1)
+
+        doner_density = 5.0 * 10**19
+        
+        arr = np.full_like(arr, doner_density)
+
+        for d in doner:
+            d["xi"] = int(d["xi"] / self.dx)
+            d["xf"] = int(d["xf"] / self.dx)
+            d["yi"] = int(d["yi"] / self.dy)
+            d["yf"] = int(d["yf"] / self.dy)
+            arr[d["xi"] : d["xf"] , d["yi"] : d["yf"] ] = float(d["nplus"])
+        result = arr.flatten()
+
+        return result
+
+
+
+
+
+class Constant(object):
+    def __init__(self):
+        self.Q = 1.60217662e-19
+        self.HBAR = 5.682119514e-16
+        self.H = 4.135667662e-15
+        self.PI = 3.14159265359
 
 if __name__ == "__main__":
 
     # create mesh
     xin = 0
     yin = 0
-    xfi = 30
-    yfi = 30
+    xfi = 30 * 10**-9
+    yfi = 30 * 10**-9
     nx = 30
     ny = 30
 
+    # doner density about n++ layer
+    doner = [
+        {
+            "xi": 0.0,
+            "xf": 3.0 * 10**-9,
+            "yi": 0.0,
+            "yf": 5.0 * 10**-9,
+            "nplus": 1.0 * 10**21
+        },
+        {
+            "xi": 27 * 10**-9,
+            "xf": 30 * 10**-9,
+            "yi": 0.0,
+            "yf": 5.0 * 10**-9,
+            "nplus": 1.0 * 10 **21
+        }
+    ]
+
     device = Device(xin, yin, xfi, yfi, nx, ny)
+
     rectangle_mesh = device.RectangleMeshCreate()
-    potential = poisson.poissonSolver(rectangle_mesh)
+
+    dopant = device.craeteChargeDistribution(doner)
+
+    potential = poisson_test.poissonSolver(rectangle_mesh, dopant)
     plotter.plot_potential_distribution(device, rectangle_mesh, potential)
 
     u = potential.vector()[:]

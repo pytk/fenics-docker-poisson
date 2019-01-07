@@ -58,3 +58,23 @@ def plot_wave_function(device, mesh, wavefunction):
         ax.set_title("Electro Static Potential by FEniCS(PDEs)")
         fig.show()
         plt.savefig("wave-function3d" + "-" + str(i) + ".png")
+
+def plot_electric_field(device, mesh, electric_field):
+    x = np.array([])
+    y = np.array([])
+    grid = mesh.coordinates()
+    for i in range(mesh.num_vertices()):
+        x = np.append(x, grid[i][0])
+        y = np.append(y, grid[i][1])
+    X = np.reshape(x, (device.nx+1,device.ny+1)) 
+    Y = np.reshape(y, (device.nx+1,device.ny+1))
+
+    for i in range(0,3):
+        Z = electric_field[i][:][:]
+        wfig = plt.figure()
+        wax = wfig.add_subplot(111, projection='3d')
+        wsurf = wax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
+        wfig.colorbar(wsurf)
+        wax.set_title("wave function by FEniCS(PDEs)")
+        wfig.show()
+        plt.savefig("wave-function3d" + "-" + str(i) + ".png")

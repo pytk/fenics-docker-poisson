@@ -43,7 +43,30 @@ def poissonSolver(mesh):
     def boundary(x, on_boundary):
         return on_boundary
 
-    bc = DirichletBC(V, u_D, boundary)
+    def ohmic_boudary_source(x, on_boundary):
+        if( near(x[0], 0) and on_boundary):
+            return True
+    
+    def ohmic_boudary_drain(x, on_boundary):
+        if( near(x[0], 30) and on_boundary):
+            return True
+
+    def schottky_boundary(x, on_boundary):
+        if( near(x[1], 0) and (10 < x[0] and 20 < x[0]) and on_boundary):
+            return True 
+
+    u_boundary = Constant(0.0)
+    u_gate = Constant(1.0)
+    u_drain = Constant(0.0)
+    u_source = Constant(0.0)
+
+    boundary_bc = DirichletBC(V, u_boundary, boundary)
+    gate_bc = DirichletBC(V, u_gate, schottky_boundary)
+    drain_bc = DirichletBC(V, u_drain, ohmic_boudary_drain)
+    source_bc = DirichletBC(V, u_source, ohmic_boudary_source)
+    bc = [boundary_bc, gate_bc, drain_bc, source_bc]
+
+    #bc = DirichletBC(V, u_D, boundary)
 
     # Define variational problem
     u = Function(V)  # Note: not TrialFunction!
