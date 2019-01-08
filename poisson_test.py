@@ -16,6 +16,8 @@ from mpl_toolkits.mplot3d import Axes3D
 # overwrite these objects.
 from fenics import *
 
+import matplotlib.tri as tri
+
 def poissonSolver(mesh, dopant, device):
 
     print("start poisson solver")
@@ -35,7 +37,7 @@ def poissonSolver(mesh, dopant, device):
 
     # Dereclet condition
     def schottky_boundary(x, on_boundary):
-        if( near(x[1], 0) and (10 < x[0] and 20 < x[0]) and on_boundary):
+        if( near(x[1], 30) and (10 < x[0] and 20 < x[0]) and on_boundary):
             return True 
 
     V = FunctionSpace(mesh, 'CG', 1)
@@ -64,5 +66,15 @@ def poissonSolver(mesh, dopant, device):
 
     # Compute solution
     solve(F == 0, u, bc, solver_parameters={"newton_solver":{"relative_tolerance": 1e-6}})
+    # solve(F == 0, u, bc)
+
+    u = interpolate(u, V)
+
+    # Save solution in VTK format
+    file = File("poisson.pvd")
+    file << u
+
+
+    
 
     return u

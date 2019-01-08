@@ -11,7 +11,7 @@ import poisson_test
 import plotter
 
 class Device(object):
-    def __init__(self, xin, yin, xfi, yfi, nx, ny):
+    def __init__(self, xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin):
         self.xin = xin
         self.yin = yin
         self.xfi = xfi
@@ -20,6 +20,8 @@ class Device(object):
         self.ny = ny
         self.dx = xfi / nx
         self.dy = yfi / ny
+        self.gate_ini = gate_ini
+        self.gate_fin = gate_fin
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.yin, self.yfi)
@@ -29,7 +31,7 @@ class Device(object):
         mesh = RectangleMesh(Point(self.xin, self.yin), Point(self.xfi, self.yfi), self.nx, self.ny)
         return mesh
 
-    def craeteChargeDistribution(self, doner):
+    def craeteChargeDistribution(self, doner, constant):
         """
         Args
         ------
@@ -39,7 +41,10 @@ class Device(object):
         temp = (self.nx + 1) * (self.ny + 1)
         arr = np.arange(temp).reshape(self.nx+1, self.ny+1)
 
-        doner_density = 5.0 * 10**19
+        doner_density = 5.0 * 10**1
+
+        surfacepotential = 1.0 * 10**3
+        backcharge = 1.0 * 10**3
         
         arr = np.full_like(arr, doner_density)
 
@@ -49,7 +54,17 @@ class Device(object):
             d["yi"] = int(d["yi"] / self.dy)
             d["yf"] = int(d["yf"] / self.dy)
             arr[d["xi"] : d["xf"] , d["yi"] : d["yf"] ] = float(d["nplus"])
+
+        gate_ini = int(self.gate_ini / self.dx)
+        gate_fin = int(self.gate_fin / self.dx)
+        xfi = int(self.xfi / self.dx)
+        arr[0: gate_ini, 0] = surfacepotential
+        arr[gate_fin: xfi, 0] = surfacepotential
+        arr[0: xfi, 0] = backcharge
+
+        print(arr)
         result = arr.flatten()
+        result[:]
 
         return result
 
@@ -63,16 +78,19 @@ class Constant(object):
         self.HBAR = 5.682119514e-16
         self.H = 4.135667662e-15
         self.PI = 3.14159265359
+        self.EPS = 8.854187817 * 10**-12
 
 if __name__ == "__main__":
 
     # create mesh
     xin = 0
     yin = 0
-    xfi = 30 * 10**-9
-    yfi = 30 * 10**-9
+    xfi = 30
+    yfi = 30
     nx = 30
     ny = 30
+    gate_ini = 10
+    gate_fin = 10
 
     # doner density about n++ layer
     doner = [
@@ -92,13 +110,15 @@ if __name__ == "__main__":
         }
     ]
 
-    device = Device(xin, yin, xfi, yfi, nx, ny)
+    constant = Constant()
+
+    device = Device(xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin)
 
     rectangle_mesh = device.RectangleMeshCreate()
 
-    dopant = device.craeteChargeDistribution(doner)
+    dopant = device.craeteChargeDistribution(doner, constant)
 
-    potential = poisson_test.poissonSolver(rectangle_mesh, dopant)
+    potential = poisson_test.poissonSolver(rectangle_mesh, dopant, device)
     plotter.plot_potential_distribution(device, rectangle_mesh, potential)
 
     u = potential.vector()[:]

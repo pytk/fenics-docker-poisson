@@ -4,6 +4,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
+from scipy.interpolate import interp2d
 
 
 def plot_potential_distribution(device, mesh, u):
@@ -26,7 +27,7 @@ def plot_potential_distribution(device, mesh, u):
     for i in range(mesh.num_vertices()):
         x = np.append(x, grid[i][0])
         y = np.append(y, grid[i][1])
-        z = np.append(z, u_array[i])
+        z = np.append(z, u_array[i]*-1)
     X = np.reshape(x, (device.nx+1,device.ny+1)) 
     Y = np.reshape(y, (device.nx+1,device.ny+1))
     Z = np.reshape(z, (device.nx+1,device.ny+1))
