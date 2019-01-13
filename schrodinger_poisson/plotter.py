@@ -6,17 +6,34 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import interp2d
 
+class Constant(object):
+    def __init__(self):
+        self.Q = 1.60217662e-19
+        self.HBAR = 6.582119514 * 10**-16
+        self.H = 6.626070040 * 10**-34
+        self.PI = 3.14159265359
+        self.EPS = 8.854187817 * 10**-12
+        self.T = 300
+        self.M = 9.10938356 * 10**-31
+        self.KB = 1.38064852* 10**-23
+
 
 def plot_potential_distribution(device, mesh, u):
     # output potential calculated with FEniCS
-    """
-    output = open("out.txt", "w+")
+    constant = Constant()
+    
+    output = open("out.xyz", "w+")
     cordinate = mesh.coordinates()
     u_array = u.vector()[:]
+    count = 0
     for i in range(mesh.num_vertices()-1):
-        output.write('x:%8g, y:%8g, potential %g\n' % (cordinate[i][0], cordinate[i][1], u_array[i]))
+        output.write('%8g, %8g, %8g\n' % (cordinate[i][0], cordinate[i][1], u_array[i]))
+        count += 1
+        if(count >= device.nx+1):
+            count = 0
+            output.write('\n')
     output.close()
-    """
+    
 
     # plot 3d figure in x-y electro static potential with matplot lib
     x = np.array([])
@@ -27,14 +44,15 @@ def plot_potential_distribution(device, mesh, u):
     for i in range(mesh.num_vertices()):
         x = np.append(x, grid[i][0])
         y = np.append(y, grid[i][1])
-        z = np.append(z, u_array[i]*-1)
-    X = np.reshape(x, (device.nx+1,device.ny+1)) 
-    Y = np.reshape(y, (device.nx+1,device.ny+1))
-    Z = np.reshape(z, (device.nx+1,device.ny+1))
+        z = np.append(z, u_array[i])
+    X = np.reshape(x, (device.ny+1,device.nx+1)) 
+    Y = np.reshape(y, (device.ny+1,device.nx+1))
+    Z = np.reshape(z, (device.ny+1,device.nx+1))
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     surf = ax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
     fig.colorbar(surf)
+    #ax.set_zlim(2.52*10**19, 10)
     ax.set_title("Electro Static Potential by FEniCS(PDEs)")
     fig.show()
     plt.savefig("non-liner-poisson3d.png")
