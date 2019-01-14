@@ -17,6 +17,27 @@ class Constant(object):
         self.M = 9.10938356 * 10**-31
         self.KB = 1.38064852* 10**-23
 
+def electron_density(device, mesh, u):
+    x = np.array([])
+    y = np.array([])
+    z = np.array([])
+    u_array = u
+    grid = mesh.coordinates()
+    for i in range(mesh.num_vertices()):
+        x = np.append(x, grid[i][0])
+        y = np.append(y, grid[i][1])
+        z = np.append(z, u_array[i])
+    X = np.reshape(x, (device.ny+1,device.nx+1)) 
+    Y = np.reshape(y, (device.ny+1,device.nx+1))
+    Z = np.reshape(z, (device.ny+1,device.nx+1))
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
+    fig.colorbar(surf)
+    #ax.set_zlim(2.52*10**19, 10)
+    ax.set_title("Electro Static Potential by FEniCS(PDEs)")
+    fig.show()
+    plt.savefig("electron_density.png")
 
 def plot_potential_distribution(device, mesh, u):
     # output potential calculated with FEniCS

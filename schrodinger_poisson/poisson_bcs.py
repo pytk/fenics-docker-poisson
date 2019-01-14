@@ -24,7 +24,7 @@ def poissonSolver(mesh, dopant, device, cons):
 
     class Gate(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], device.yfi) and (device.src <= x[0] and x[0] <= device.drain) and on_boundary
+            return near(x[1], device.yfi) and (device.gate_ini <= x[0] and x[0] <= device.gate_fin) and on_boundary
     
     class Drain(SubDomain):
         def inside(self, x, on_boundary):
@@ -50,23 +50,18 @@ def poissonSolver(mesh, dopant, device, cons):
         def inside(self, x, on_boundary):
             return near(x[1], device.yfi) and (device.src < x[0] and x[0] < device.gate_ini) and (device.gate_fin < x[0] and x[0] < device.drain) and on_boundary
 
-    class Obstacle(SubDomain):
-        def inside(self, x, on_boundary):
-            return (between(x[1], (device.yin, device.yfi)) and between(x[0], (device.xin, device.xfi)))
 
     gate = Gate()
     drain = Drain()
     source = Source()
-    right = Right()
     left = Left()
+    right = Right()
     bottom = Bottom()
     other = Other()
-    obstacle = Obstacle()
 
     # Initialize mesh function for interior domains
     domains = CellFunction("size_t", mesh)
     domains.set_all(0)
-    obstacle.mark(domains, 1)
 
     # Initialize mesh function for boundary domains
     boundaries = FacetFunction("size_t", mesh)
@@ -74,8 +69,8 @@ def poissonSolver(mesh, dopant, device, cons):
     gate.mark(boundaries, 1)
     drain.mark(boundaries, 2)
     source.mark(boundaries, 3)
-    right.mark(boundaries, 4)
-    left.mark(boundaries, 5)
+    left.mark(boundaries, 4)
+    right.mark(boundaries, 5)
     bottom.mark(boundaries, 6)
     other.mark(boundaries, 7)
 
@@ -85,10 +80,12 @@ def poissonSolver(mesh, dopant, device, cons):
     u_gate = bias.bias(device, "Schottky", applied_volatage)
     u_drain = bias.bias(device, "Ohmic", 0.0)
     u_source = bias.bias(device, "Ohmic", 0.0)
+    
 
     u_gate = Constant(u_gate)
-    u_drain = Constant(-u_drain)
-    u_source = Constant(-u_source)
+    u_drain = Constant(u_drain)
+    u_source = Constant(u_source)
+    
 
     bc = [DirichletBC(V, u_gate, boundaries, 1), DirichletBC(V, u_drain, boundaries, 2),DirichletBC(V, u_source, boundaries, 3)]
 
@@ -111,15 +108,16 @@ def poissonSolver(mesh, dopant, device, cons):
     v = TestFunction(V)
 
     f = Function(V)
-    f.vector()[:] = np.array([i for i in dopant])
+    f.vector().set_local(dopant)
+    
+    #f.vector()[:] = np.array([i for i in dopant])
     #f = Constant(5.0)
-
 
     # SiO2 dielectric constant = 3.8
     # SiO2 width is around 1nm
     # Insulator charge = 1.0 E+19
     
-    F = inner(grad(u), grad(v))*dx(1) - (zero*v*ds(4)) - (zero*v*ds(5)) - (zero*v*ds(6)) - f*v*dx(1)
+    F = inner(grad(u), grad(v))*dx(0) - (zero*v*ds(4)) - (zero*v*ds(5)) - (zero*v*ds(6)) - (zero*v*ds(7)) - f*v*dx(0)
 
     # - ((eps * (u_gate - u)/ 10**-9))*v*ds(1)
 

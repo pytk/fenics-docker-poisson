@@ -50,7 +50,7 @@ class Device(object):
         doner_density = 1.0 * 10**3
 
         #surfacepotential = 1.0 * 10**19
-        backcharge = -2.0 * 10**3
+        backcharge = 2.0 * 10**3
         
         arr = np.full_like(arr, doner_density)
 
@@ -101,14 +101,14 @@ if __name__ == "__main__":
     nm = 1 * 10**-9
     xin = 0
     yin = 0
-    xfi = 300 * nm
+    xfi = 50 * nm
     yfi = 50 * nm
-    nx = 100
+    nx = 50
     ny = 50
-    gate_ini = 125 * nm
-    gate_fin = 175 * nm
-    src = 100 * nm
-    drain = 200 * nm
+    gate_ini = 20 * nm
+    gate_fin = 30 * nm
+    src = 10 * nm
+    drain = 40 * nm
     oxyde = 3 * nm
     acceptor = 1 * 10**21
 
@@ -116,17 +116,17 @@ if __name__ == "__main__":
     doner = [
         {
             "xi": 0,
-            "xf": 100 * nm,
-            "yi": 0 * nm,
+            "xf": 15 * nm,
+            "yi": 25 * nm,
             "yf": 50 * nm,
-            "nplus": -1.0 * 10**4
+            "nplus": 1.0 * 10**4
         },
         {
-            "xi": 200 * nm,
-            "xf": 300 * nm,
-            "yi": 0 * nm,
+            "xi": 35 * nm,
+            "xf": 50 * nm,
+            "yi": 25 * nm,
             "yf": 50 * nm,
-            "nplus": -1.0 * 10 **4
+            "nplus": 1.0 * 10 **4
         }
     ]
 
@@ -153,6 +153,8 @@ if __name__ == "__main__":
     rectangle_mesh = device.RectangleMeshCreate()
 
     dopant = device.craeteChargeDistribution(doner, constant)
+
+    #plotter.electron_density(device, rectangle_mesh, dopant)
 
     potential = poisson_bcs.poissonSolver(rectangle_mesh, dopant, device, constant)
     plotter.plot_potential_distribution(device, rectangle_mesh, potential)
