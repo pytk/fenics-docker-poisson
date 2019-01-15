@@ -12,7 +12,7 @@ import plotter
 import sys
 
 class Device(object):
-    def __init__(self, xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin, src, drain, material, oxyde, acceptor):
+    def __init__(self, xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin, src, drain, material, oxyde, acceptor, channel):
         self.xin = xin
         self.yin = yin
         self.xfi = xfi
@@ -28,6 +28,7 @@ class Device(object):
         self.material = material
         self.oxyde = oxyde
         self.acceptor = acceptor
+        self.channel = channel
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.yin, self.yfi)
@@ -47,10 +48,7 @@ class Device(object):
         temp = (self.nx + 1) * (self.ny + 1)
         arr = np.arange(temp).reshape(self.ny+1, self.nx+1)
 
-        doner_density = 1.0 * 10**3
-
-        #surfacepotential = 1.0 * 10**19
-        backcharge = 2.0 * 10**3
+        doner_density = 1.0 * 10**20
         
         arr = np.full_like(arr, doner_density)
 
@@ -65,13 +63,20 @@ class Device(object):
         gate_ini = int(self.gate_ini / self.dx)
         gate_fin = int(self.gate_fin / self.dx)
         xfi = int(self.xfi / self.dx)
+
+        """
+        oxyde = int(self.oxyde / self.dy)
+
+        arr[0 : oxyde, :] = 0.0
+        arr[-oxyde:, :] =  0.0
+        """
+
         
         #arr[0: gate_ini, 0] = surfacepotential
         #arr[gate_fin: xfi, 0] = surfacepotential
-        arr[0, :] = backcharge
+        #arr[0, :] = backcharge
 
-        arr = arr / constant.EPS / 10**-9
-        arr = arr * constant.Q
+        arr = arr / constant.EPS
 
         np.savetxt("array.csv", arr)
         
@@ -101,32 +106,33 @@ if __name__ == "__main__":
     nm = 1 * 10**-9
     xin = 0
     yin = 0
-    xfi = 50 * nm
+    xfi = 300 * nm
     yfi = 50 * nm
-    nx = 50
+    nx = 300
     ny = 50
-    gate_ini = 20 * nm
-    gate_fin = 30 * nm
+    gate_ini = 50 * nm
+    gate_fin = 250 * nm
     src = 10 * nm
     drain = 40 * nm
-    oxyde = 3 * nm
+    oxyde = 38 * nm
     acceptor = 1 * 10**21
+    channel = 12 * nm
 
     # doner density about n++ layer
     doner = [
         {
             "xi": 0,
-            "xf": 15 * nm,
-            "yi": 25 * nm,
-            "yf": 50 * nm,
-            "nplus": 1.0 * 10**4
+            "xf": 50 * nm,
+            "yi": 0 * nm,
+            "yf": 12 * nm,
+            "nplus": 1.0 * 10**21
         },
         {
-            "xi": 35 * nm,
-            "xf": 50 * nm,
-            "yi": 25 * nm,
-            "yf": 50 * nm,
-            "nplus": 1.0 * 10 **4
+            "xi": 250 * nm,
+            "xf": 300 * nm,
+            "yi": 0 * nm,
+            "yf": 12 * nm,
+            "nplus": 1.0 * 10 **21
         }
     ]
 
@@ -148,7 +154,7 @@ if __name__ == "__main__":
 
     constant = Constant()
 
-    device = Device(xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin, src, drain, material, oxyde, acceptor)
+    device = Device(xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin, src, drain, material, oxyde, acceptor, channel)
 
     rectangle_mesh = device.RectangleMeshCreate()
 
@@ -157,21 +163,22 @@ if __name__ == "__main__":
     #plotter.electron_density(device, rectangle_mesh, dopant)
 
     potential = poisson_bcs.poissonSolver(rectangle_mesh, dopant, device, constant)
-    plotter.plot_potential_distribution(device, rectangle_mesh, potential)
+    #plotter.plot_potential_distribution(device, rectangle_mesh, potential)
 
+    """
     V = FunctionSpace(rectangle_mesh, 'CG', 1)
     new_potential = Function(V)
     new_potential.vector()[:] = np.array([-constant.Q*j for j in potential.vector()[:]])
-    """
     u = potential.vector()[:]
     temp = np.array([])
     for i in range(rectangle_mesh.num_vertices()):
         temp = np.append(temp, u[i])
     potential = np.reshape(temp, (device.nx+1,device.ny+1))
-    
-    potential = np.reshape(new_potential, (device.nx+1,device.ny+1))
-
-    interval_mesh = device.IntervalMeshCreate()
-    electric_field, wavefunction = schrodinger_fenics.schrodinger(interval_mesh, potential)
-    plotter.plot_wave_function(device, rectangle_mesh, wavefunction)
+    new_potential = np.reshape(new_potential, (device.nx+1,device.ny+1))
     """
+    #mesh = device.IntervalMeshCreate()
+    # interval_mesh = device.IntervalMeshCreate()
+    # schrodinger_fenics.schrodinger_2d(rectangle_mesh, potential, device, constant)
+    #schrodinger_fenics.schrodinger(mesh, potential, device, constant)
+    #plotter.plot_wave_function(device, rectangle_mesh, wavefunction)
+    
