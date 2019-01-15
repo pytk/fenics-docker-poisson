@@ -38,15 +38,27 @@ def poissonSolver(mesh, dopant, device, cons):
 
     class Gate(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], device.yfi) and on_boundary and (device.gate_ini < x[0] and x[0] < device.gate_fin)
+            return near(x[1], device.yfi) and on_boundary and (device.gate_ini <= x[0] and x[0] <= device.gate_fin)
 
+    """
     class Drain(SubDomain):
         def inside(self, x, on_boundary):
             return near(x[0], 0) and on_boundary and (device.oxyde < x[1] and x[1] <= (device.channel + device.oxyde))
+    """
 
+    class Drain(SubDomain):
+        def inside(self, x, on_boundary):
+            return near(x[1], device.yfi) and on_boundary and (0 < x[0] and x[0] <= device.src)
+
+    """
     class Source(SubDomain):
         def inside(self, x, on_boundary):
             return near(x[0], device.xfi) and on_boundary and (device.oxyde < x[1] and x[1] <= (device.channel + device.oxyde))
+    """
+
+    class Source(SubDomain):
+        def inside(self, x, on_boundary):
+            return near(x[1], device.yfi) and on_boundary and (device.drain <= x[0] and x[0] < device.xfi)
 
     class Bottom(SubDomain):
         def inside(self, x, on_boundary):
@@ -56,9 +68,15 @@ def poissonSolver(mesh, dopant, device, cons):
         def inside(self, x, on_boundary):
             return near(x[1], device.oxyde)
 
+    """
     class Nuemann(SubDomain):
         def inside(self, x, on_boundary):
             return on_boundary and ((0 <= x[0] and x[0] < device.gate_ini) or (device.gate_fin < x[0] and x[0] <= device.xfi)) and near(x[1], 0)
+    """
+
+    class Nuemann(SubDomain):
+        def inside(self, x, on_boundary):
+            return near(x[0], 0) or near(x[0], device.xfi) or (device.src < x[0] and x[0] < device.gate_ini and near(x[1], device.yfi)) or (device.gate_fin < x[0] and x[0] < device.drain and near(x[1], device.yfi))
 
     class OxydeSide(SubDomain):
         def inside(self, x, on_boundary):

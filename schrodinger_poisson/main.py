@@ -112,8 +112,8 @@ if __name__ == "__main__":
     ny = 50
     gate_ini = 50 * nm
     gate_fin = 250 * nm
-    src = 10 * nm
-    drain = 40 * nm
+    src = 40 * nm
+    drain = 260 * nm
     oxyde = 38 * nm
     acceptor = 1 * 10**21
     channel = 12 * nm
