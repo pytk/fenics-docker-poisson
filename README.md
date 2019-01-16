@@ -15,11 +15,16 @@
 
 ### Boundary function for Dirichlet condition
 
-![2019-01-04 18 40 29](https://user-images.githubusercontent.com/27273842/50681867-499d8980-1050-11e9-9008-99c54d6142d6.png)
+Using FEniCS which is a science compuing library to calculate with fenite element method for solving partial difference equation. The goal is solving self-consistent problem about poisson equation and schrodinger equation in an inversion layer of Germanium channel ultran thin mosfet.
 
- ```python
-f = Expression(’x[0]>=0 && x[1]>=0 ? pow(x[0], 2) : 2’, degree=2)
- ```
 
-![poisson](https://user-images.githubusercontent.com/27273842/50679244-0c33fe80-1046-11e9-9e0e-53160b3e77c4.png)
+![2019-01-17 0 58 29](https://user-images.githubusercontent.com/27273842/51261624-f20a0100-19f3-11e9-82f7-1f2022c3261f.png)
+
+we have to consider boudary conditon based on semiconductor physics not only considering electron distribution.
+
+And we assume the device structure is like below
+
+![2019-01-17 1 17 24](https://user-images.githubusercontent.com/27273842/51262424-af492880-19f5-11e9-9aa2-9bbdb9a36334.png)
+
+this project is still going on. Eventually, I'm going to apply to electron transport problem with Monte Carlo Simlation.
 

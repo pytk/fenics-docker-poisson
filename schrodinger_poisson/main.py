@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
     #plotter.electron_density(device, rectangle_mesh, dopant)
 
-    potential = poisson_bcs.poissonSolver(rectangle_mesh, dopant, device, constant)
+    potential = poisson_bcs.poissonSolverTest(rectangle_mesh, dopant, device, constant)
     #plotter.plot_potential_distribution(device, rectangle_mesh, potential)
 
     """
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     potential = np.reshape(temp, (device.nx+1,device.ny+1))
     new_potential = np.reshape(new_potential, (device.nx+1,device.ny+1))
     """
-    #mesh = device.IntervalMeshCreate()
+    mesh = device.IntervalMeshCreate()
     # interval_mesh = device.IntervalMeshCreate()
     # schrodinger_fenics.schrodinger_2d(rectangle_mesh, potential, device, constant)
     #schrodinger_fenics.schrodinger(mesh, potential, device, constant)
