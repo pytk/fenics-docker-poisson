@@ -158,9 +158,9 @@ if __name__ == "__main__":
     potential = np.reshape(temp, (device.nx+1,device.ny+1))
     new_potential = np.reshape(new_potential, (device.nx+1,device.ny+1))
     """
-    mesh = device.IntervalMeshCreate()
+    #mesh = device.IntervalMeshCreate()
     # interval_mesh = device.IntervalMeshCreate()
     # schrodinger_fenics.schrodinger_2d(rectangle_mesh, potential, device, constant)
-    #schrodinger_fenics.schrodinger(mesh, potential, device, constant)
+    #schrodinger_fenics.schrodinger_2d(rectangle_mesh, potential, device, constant)
     #plotter.plot_wave_function(device, rectangle_mesh, wavefunction)
     

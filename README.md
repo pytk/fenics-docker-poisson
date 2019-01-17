@@ -18,7 +18,7 @@
 Using FEniCS which is a science compuing library to calculate with fenite element method for solving partial difference equation. The goal is solving self-consistent problem about poisson equation and schrodinger equation in an inversion layer of Germanium channel ultran thin mosfet.
 
 
-![2019-01-17 0 58 29](https://user-images.githubusercontent.com/27273842/51261624-f20a0100-19f3-11e9-82f7-1f2022c3261f.png)
+![electrostatic_potential](https://user-images.githubusercontent.com/27273842/51325994-84240f00-1ab1-11e9-8bf8-306328d8e211.png)
 
 we have to consider boudary conditon based on semiconductor physics not only considering electron distribution.
 

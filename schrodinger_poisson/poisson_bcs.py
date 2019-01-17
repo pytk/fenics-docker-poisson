@@ -12,6 +12,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import scipy
 import bias
+import matplotlib.animation as animation
 
 # Warning: from fenics import * will import both `sym` and
 # `q` from FEniCS. We therefore import FEniCS first and then
@@ -67,9 +68,20 @@ def poissonSolverTest(mesh, dopant, device, cons):
 
     V = FunctionSpace(mesh, 'CG', 1)
 
-    applied_volatage = 0.0
+    # plot with matplotlib instead of paraview
+    n = V.dim()
+    d = mesh.geometry().dim()
+
+    dof_coordinates = V.tabulate_dof_coordinates()
+    dof_coordinates.resize((n, d))
+    dof_x = dof_coordinates[:, 0]
+    dof_y = dof_coordinates[:, 1]
+
+
+    # calculate contact bias
+    applied_volatage = 0.3
     u_gate = bias.bias(device, "Schottky", applied_volatage)
-    u_drain = bias.bias(device, "Ohmic", 0.0)
+    u_drain = bias.bias(device, "Ohmic", 0.5)
     u_source = bias.bias(device, "Ohmic", 0.0)
     u_bottom = bias.bias(device, "Schottky", 0.0)
 
@@ -117,8 +129,21 @@ def poissonSolverTest(mesh, dopant, device, cons):
 
     u = interpolate(u, V)
 
-    plot(u, title = "Electrostatic  Potential")
+    fig = plt.figure()
+    ax = fig.gca(projection="3d")
+    u_array = -1 * u.vector().array()
+    ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
+    ax.view_init(10, -220)
+
+        
+    """
+    print("Making Animation")
+    rot_animation = animation.FuncAnimation(fig, rotate)
+    rot_animation.save('rotation.gif', writer='imagemagick')
+    """
+
     plt.savefig("electrostatic_potential.png")
+    plot(u, title = "Electrostatic  Potential")
 
     # Save solution in VTK format
     file = File("poisson.pvd")
