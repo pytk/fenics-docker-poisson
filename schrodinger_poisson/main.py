@@ -12,23 +12,21 @@ import plotter
 import sys
 
 class Device(object):
-    def __init__(self, xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin, src, drain, material, oxyde, acceptor, channel):
-        self.xin = xin
-        self.yin = yin
-        self.xfi = xfi
-        self.yfi = yfi
-        self.nx = nx
-        self.ny = ny
-        self.dx = xfi / nx
-        self.dy = yfi / ny
-        self.gate_ini = gate_ini
-        self.gate_fin = gate_fin
-        self.src = src
-        self.drain = drain
+    def __init__(self, structure, material):
+        self.xin = structure["xin"]
+        self.yin = structure["yin"]
+        self.xfi = structure["xfi"]
+        self.yfi = structure["yfi"]
+        self.nx = structure["nx"]
+        self.ny = structure["ny"]
+        self.dx = self.xfi / self.nx
+        self.dy = self.yfi / self.ny
+        self.gate_ini = structure["gate_ini"]
+        self.gate_fin = structure["gate_fin"]
+        self.src = structure["src"]
+        self.drain = structure["drain"]
         self.material = material
-        self.oxyde = oxyde
-        self.acceptor = acceptor
-        self.channel = channel
+        self.doner = structure["doner"]
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.yin, self.yfi)
@@ -48,7 +46,7 @@ class Device(object):
         temp = (self.nx + 1) * (self.ny + 1)
         arr = np.arange(temp).reshape(self.ny+1, self.nx+1)
 
-        doner_density = 1.0 * 10**20
+        doner_density = self.doner
         
         arr = np.full_like(arr, doner_density)
 
@@ -60,31 +58,13 @@ class Device(object):
             d["yf"] = int(d["yf"] / self.dy)
             arr[d["yi"] : d["yf"] , d["xi"] : d["xf"] ] = float(d["nplus"])
 
-        gate_ini = int(self.gate_ini / self.dx)
-        gate_fin = int(self.gate_fin / self.dx)
-        xfi = int(self.xfi / self.dx)
-
-        """
-        oxyde = int(self.oxyde / self.dy)
-
-        arr[0 : oxyde, :] = 0.0
-        arr[-oxyde:, :] =  0.0
-        """
-
-        
-        #arr[0: gate_ini, 0] = surfacepotential
-        #arr[gate_fin: xfi, 0] = surfacepotential
-        #arr[0, :] = backcharge
-
-        arr = arr / constant.EPS
-
         np.savetxt("array.csv", arr)
         
         result = arr.flatten()
         
         return result
 
-class Constant(object):
+class ConstantValue(object):
     def __init__(self):
         self.Q = 1.60217662e-19
         self.HBAR = 6.582119514 * 10**-16
@@ -102,21 +82,23 @@ if __name__ == "__main__":
         ptvsd.enable_attach("my_secret", address=('0.0.0.0', 53005))
         ptvsd.wait_for_attach()
 
-    # create mesh
     nm = 1 * 10**-9
-    xin = 0
-    yin = 0
-    xfi = 300 * nm
-    yfi = 50 * nm
-    nx = 300
-    ny = 50
-    gate_ini = 50 * nm
-    gate_fin = 250 * nm
-    src = 40 * nm
-    drain = 260 * nm
-    oxyde = 38 * nm
-    acceptor = 1 * 10**21
-    channel = 12 * nm
+
+    # create mesh
+    structure = {
+        "nm": 1 * 10**-9,
+        "xin": 0,
+        "yin": 0,
+        "xfi": 300 * nm,
+        "yfi": 20 * nm,
+        "nx": 300,
+        "ny": 20,
+        "gate_ini": 50 * nm,
+        "gate_fin": 250 * nm,
+        "src": 40 * nm,
+        "drain": 260 * nm,
+        "doner": 1.0 * 10**21 
+    }
 
     # doner density about n++ layer
     doner = [
@@ -152,9 +134,9 @@ if __name__ == "__main__":
         "metal_work_function": 5.43
     }
 
-    constant = Constant()
+    constant = ConstantValue()
 
-    device = Device(xin, yin, xfi, yfi, nx, ny, gate_ini, gate_fin, src, drain, material, oxyde, acceptor, channel)
+    device = Device(structure, material)
 
     rectangle_mesh = device.RectangleMeshCreate()
 
