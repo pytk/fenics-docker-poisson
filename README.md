@@ -28,3 +28,9 @@ And we assume the device structure is like below
 
 this project is still going on. Eventually, I'm going to apply to electron transport problem with Monte Carlo Simlation.
 
+
+### wave function???
+
+![wavefunction](https://user-images.githubusercontent.com/27273842/51398847-f6672300-1b87-11e9-8556-8a78522c325e.png)
+
+

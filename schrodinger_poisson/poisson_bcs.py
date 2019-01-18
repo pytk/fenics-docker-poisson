@@ -27,7 +27,7 @@ def poissonSolverTest(mesh, dopant, device, cons):
 
     class Gate(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], device.yfi) and (device.gate_ini <= x[0] and x[0] <= device.gate_fin)
+            return near(x[1], 0) and (device.gate_ini <= x[0] and x[0] <= device.gate_fin)
 
     class Source(SubDomain):
         def inside(self, x, on_boundary):
@@ -39,11 +39,11 @@ def poissonSolverTest(mesh, dopant, device, cons):
 
     class Bottom(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], 0) and on_boundary
+            return near(x[1], device.yfi) and on_boundary
 
     class Nuemann(SubDomain):
         def inside(self, x, on_boundary):
-            return on_boundary and ((device.src < x[0] and x[0] < device.gate_ini) or (device.gate_fin < x[0] and x[0] < device.drain)) and near(x[1], device.yfi)
+            return on_boundary and ((device.src < x[0] and x[0] < device.gate_ini) or (device.gate_fin < x[0] and x[0] < device.drain)) and near(x[1], 0)
 
     channel = Channel()
     gate = Gate()
@@ -135,16 +135,15 @@ def poissonSolverTest(mesh, dopant, device, cons):
     potential = -1*potential[i]
     np.savetxt("vector.csv", -1*u.vector())
     np.savetxt("array.csv", -1*u.vector().array())
-    #u_array = -1 * u.vector().array()
+    u_array = -1 * u.vector().array()
 
 
-    """ Plot function for electro static potential Don't delete this!!
+    
     fig = plt.figure()
     ax = fig.gca(projection="3d")
     ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
-    ax.view_init(10, -220)
+    ax.view_init(30, -120)
     plt.savefig("electrostatic_potential.png")
-    """
 
     # Save solution in VTK format
     file = File("poisson.pvd")

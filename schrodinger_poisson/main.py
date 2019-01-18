@@ -90,7 +90,7 @@ if __name__ == "__main__":
         "xfi": 300 * nm,
         "yfi": 20 * nm,
         "nx": 300,
-        "ny": 20,
+        "ny": 200,
         "gate_ini": 50 * nm,
         "gate_fin": 250 * nm,
         "src": 40 * nm,
@@ -159,6 +159,6 @@ if __name__ == "__main__":
     #mesh = device.IntervalMeshCreate()
     #interval_mesh = device.IntervalMeshCreate()
     # schrodinger_fenics.schrodinger_2d(rectangle_mesh, potential, device, constant)
-    schrodinger_fenics.schrodinger_test(rectangle_mesh, potential, device, constant)
+    schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant)
     #plotter.plot_wave_function(device, rectangle_mesh, wavefunction)
     
