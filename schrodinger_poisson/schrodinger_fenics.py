@@ -5,6 +5,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
+import sys
 
 # Warning: from fenics import * will import both `sym` and
 # `q` from FEniCS. We therefore import FEniCS first and then
@@ -30,48 +31,51 @@ def makeHamiltonian(ny, dy, potential):
 
 
 def schrodinger_test(mesh, potential, device, cons):
+
+    V = FunctionSpace(mesh, 'CG', 1)
+
+    # plot with matplotlib instead of paraview
+    n = V.dim()
+    d = mesh.geometry().dim()
+
+    dof_coordinates = V.tabulate_dof_coordinates()
+    dof_coordinates.resize((n, d))
+    dof_x = dof_coordinates[:, 0]
+    dof_y = dof_coordinates[:, 1]
+
     N = device.ny 
     L = device.yfi
     x, dx = np.linspace(0, L, N), L / N
 
-    potential = np.array([-1 * i for i in potential.vector()[:]])
     potential = np.reshape(potential, (device.ny+1,device.nx+1))
 
-    np.savetxt("potential.csv", potential)
-
     #potential = potential.flatten()
+    y, dy = np.linspace(0, L, N+1), L / N
+    wavefunction = np.empty((device.ny+1, device.nx+1))
 
-    #wavefunction = np.empty((potential.shape[0], potential.shape[1]))
-
-    """
-    for (index, p) in enumerate(potential):
-        vector = p
-        H = makeHamiltonian(ny, dy, vector)
+    for index in range(device.nx + 1):
+        vector = potential[:, -index]
+        plt.plot(y, vector)
+        plt.savefig("img/temp" + str(index) + ".png")
+        H = makeHamiltonian(N, dx, vector)
         w, v = np.linalg.eigh(H)
-        wavefunction[index][:] = v[:,0]
-    """
+        #wavefunction[:, -index] = v[:,0]
 
+        if(index > 10):
+            sys.exit()
+
+    """
     #plt.plot(x, v.T[0] / simps(v.T[0]**2, x)**0.5, label="gradn state")
-    plt.savefig("wavefunction.png")
-
-    """
-    np.savetxt("array.csv", wavefunction)
     wavefunction = wavefunction.T
     wavefunction = wavefunction.flatten()
 
-    rectangle_mesh = device.RectangleMeshCreate()
-    V = FunctionSpace(rectangle_mesh, 'CG', 1)
-
-    u = Function(V)
-
-    u.vector()[:] = np.array([i for i in wavefunction])
-    plot(u)
+    fig = plt.figure()
+    ax = fig.gca(projection="3d")
+    ax.plot_trisurf(dof_x, dof_y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
+    ax.view_init(10, -220)
     plt.savefig("wavefunction.png")
 
-    file = File("wavefunction.pvd")
-    file << u
-
-    return u
+    print("finish!!!!!!!!!!!!!!")
     """
 
 
@@ -95,14 +99,9 @@ def schrodinger_2d(mesh, potential, device, cons):
     print("Starting Schrodinger Wave Function")
     V = FunctionSpace(mesh, 'CG', 1)
 
-    def boundary(x, on_boundary):
-        return on_boundary
-
     # Initialize mesh function for interior domains
     domains = CellFunction("size_t", mesh)
     domains.set_all(0)
-
-    bc = DirichletBC(V, 0, boundary)
 
     dx = Measure("dx", subdomain_data=domains)
 
@@ -111,7 +110,7 @@ def schrodinger_2d(mesh, potential, device, cons):
     v = TestFunction(V)
     Vpot = Function(V)
 
-    Vpot.vector()[:] = np.array([-1 * i for i in potential.vector()])
+    Vpot.vector().array()[:] = np.array([-1 * i for i in potential])
 
     # p.vector()[:] = np.array([i for i in potential.vector()])
     temp = -1 * pow(cons.HBAR, 2) / (2*device.material["electron_effective_mass"]*cons.M)
@@ -147,7 +146,7 @@ def schrodinger_2d(mesh, potential, device, cons):
     r, c, rx, cx = eigensolver.get_eigenpair(0)
 
     #assign eigenvector to function
-    u.vector()[:] = rx
+    u.vector().array()[:] = rx
 
     plot(u)
     plt.savefig("schrodinger-fenics.png")
@@ -193,9 +192,8 @@ def schrodinger(mesh, potential, device, cons):
     """
     subband_number = 3
 
-    potential = np.array([i for i in potential.vector()[:]])
+    potential = np.array([i for i in potential])
     potential = np.reshape(potential, (device.ny+1,device.nx+1))
-
     potential = potential.T
 
     #potential = potential.flatten()
@@ -221,22 +219,13 @@ def schrodinger(mesh, potential, device, cons):
         v = TestFunction(V)
         Vpot = Function(V)
 
-        Vpot.vector()[:] = np.array([i for i in p])
+        Vpot.vector().array()[:] = np.array([i for i in p])
 
         # p.vector()[:] = np.array([i for i in potential.vector()])
         temp = -1 * pow(cons.HBAR, 2) / (2*device.material["electron_effective_mass"]*cons.M)
 
         a = (inner(temp * grad(u), grad(v)) + Vpot*u*v)*dx(0)
         m = u*v*dx(0)
-
-        """
-        A = PETScMatrix()
-        assemble(a, tensor=A)
-        M = PETScMatrix()
-        assemble(m, tensor=M)
-        bc.apply(A)          # apply the boundary conditions
-        bc.apply(M)
-        """
 
         A = PETScMatrix()
         M = PETScMatrix()
@@ -261,25 +250,46 @@ def schrodinger(mesh, potential, device, cons):
         print("eigen value : " + str(r))
 
         #assign eigenvector to function
-        wavefunction[index][:] = rx
+        wavefunction[:][index] = rx
 
-    wavefunction = wavefunction.T
-    print(wavefunction)
     wavefunction = wavefunction.flatten()
+
+    np.savetxt("wavefunction.csv", wavefunction)
 
     rectangle_mesh = device.RectangleMeshCreate()
     V = FunctionSpace(rectangle_mesh, 'CG', 1)
 
     u = Function(V)
 
-    u.vector()[:] = np.array([i for i in wavefunction])
+    u.vector().array()[:] = np.array([i for i in wavefunction])
+
+    u = interpolate(u, V)
+
+    array = np.array([i for i in u.vector().array()[:]])
+    np.savetxt("array.csv", array)
+
+    n = V.dim()
+    d = rectangle_mesh.geometry().dim()
+
+    dof_coordinates = V.tabulate_dof_coordinates()
+    dof_coordinates.resize((n, d))
+    dof_x = dof_coordinates[:, 0]
+    dof_y = dof_coordinates[:, 1]
+
+    fig = plt.figure()
+    ax = fig.gca(projection="3d")
+    u_array = -1 * u.vector().array()
+    ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
+    ax.view_init(10, -220)
+
+    plt.savefig("wave_function.png")
+    """
     plot(u)
     plt.savefig("wavefunction.png")
 
     file = File("wavefunction.pvd")
     file << u
-        
-    return u
+    """
 """
         for i in range(0,subband_number):
             eigen_value[i][index][:] = eigenvalue[i]

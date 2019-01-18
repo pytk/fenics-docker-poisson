@@ -57,8 +57,6 @@ class Device(object):
             d["yi"] = int(d["yi"] / self.dy)
             d["yf"] = int(d["yf"] / self.dy)
             arr[d["yi"] : d["yf"] , d["xi"] : d["xf"] ] = float(d["nplus"])
-
-        np.savetxt("array.csv", arr)
         
         result = arr.flatten()
         
@@ -79,7 +77,7 @@ if __name__ == "__main__":
     if (len(sys.argv) > 1) and (sys.argv[1] == "debug"):
         import ptvsd
         print("waiting...")
-        ptvsd.enable_attach("my_secret", address=('0.0.0.0', 53005))
+        ptvsd.enable_attach("my_secret", address=('127.0.0.1', 8000))
         ptvsd.wait_for_attach()
 
     nm = 1 * 10**-9
@@ -159,8 +157,8 @@ if __name__ == "__main__":
     new_potential = np.reshape(new_potential, (device.nx+1,device.ny+1))
     """
     #mesh = device.IntervalMeshCreate()
-    # interval_mesh = device.IntervalMeshCreate()
+    #interval_mesh = device.IntervalMeshCreate()
     # schrodinger_fenics.schrodinger_2d(rectangle_mesh, potential, device, constant)
-    #schrodinger_fenics.schrodinger_2d(rectangle_mesh, potential, device, constant)
+    schrodinger_fenics.schrodinger_test(rectangle_mesh, potential, device, constant)
     #plotter.plot_wave_function(device, rectangle_mesh, wavefunction)
     

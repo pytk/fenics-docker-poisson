@@ -89,7 +89,6 @@ def poissonSolverTest(mesh, dopant, device, cons):
     u_drain = Constant(u_drain)
     u_source = Constant(u_source)
     u_bottom = Constant(u_bottom)
-    
 
     bc = [DirichletBC(V, u_gate, boundaries, 1) ,DirichletBC(V, u_drain, boundaries, 2),DirichletBC(V, u_source, boundaries, 3),  DirichletBC(V, u_bottom, boundaries, 4)]
 
@@ -111,7 +110,8 @@ def poissonSolverTest(mesh, dopant, device, cons):
     v = TestFunction(V)
 
     f = Function(V)
-    f.vector()[:] = np.array([i for i in dopant])
+
+    f.vector().array()[:] = np.array([i for i in dopant])
 
     # SiO2 dielectric constant = 3.8
     # SiO2 width is around 1nm
@@ -128,22 +128,23 @@ def poissonSolverTest(mesh, dopant, device, cons):
     # solve(F == 0, u, bc)
 
     u = interpolate(u, V)
+    potential = u.vector().array()
+    i = np.argsort(potential)
+    #potential = np.array([j for j in potential[i]])
 
+    potential = -1*potential[i]
+    np.savetxt("vector.csv", -1*u.vector())
+    np.savetxt("array.csv", -1*u.vector().array())
+    #u_array = -1 * u.vector().array()
+
+
+    """ Plot function for electro static potential Don't delete this!!
     fig = plt.figure()
     ax = fig.gca(projection="3d")
-    u_array = -1 * u.vector().array()
     ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
     ax.view_init(10, -220)
-
-        
-    """
-    print("Making Animation")
-    rot_animation = animation.FuncAnimation(fig, rotate)
-    rot_animation.save('rotation.gif', writer='imagemagick')
-    """
-
     plt.savefig("electrostatic_potential.png")
-    plot(u, title = "Electrostatic  Potential")
+    """
 
     # Save solution in VTK format
     file = File("poisson.pvd")
@@ -152,4 +153,4 @@ def poissonSolverTest(mesh, dopant, device, cons):
     print("finish!!!!!!!!!!!!!!!")
     
 
-    return u
+    return potential
