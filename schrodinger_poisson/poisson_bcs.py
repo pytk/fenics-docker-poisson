@@ -17,7 +17,7 @@ import matplotlib.animation as animation
 # Warning: from fenics import * will import both `sym` and
 # `q` from FEniCS. We therefore import FEniCS first and then
 # overwrite these objects.
-from fenics import *
+from dolfin import *
 
 def poissonSolverTest(mesh, dopant, device, cons):
 
@@ -53,12 +53,12 @@ def poissonSolverTest(mesh, dopant, device, cons):
     nuemann = Nuemann()
 
     # Initialize mesh function for interior domains
-    domains = CellFunction("size_t", mesh)
+    domains = MeshFunction("size_t", mesh, mesh.topology().dim(), 0)
     domains.set_all(0)
     channel.mark(domains, 1)
 
     # Initialize mesh function for boundary domains
-    boundaries = FacetFunction("size_t", mesh)
+    boundaries = MeshFunction("size_t", mesh, mesh.topology().dim()-1, 0)
     boundaries.set_all(0)
     gate.mark(boundaries, 1)
     drain.mark(boundaries, 2)
@@ -109,9 +109,9 @@ def poissonSolverTest(mesh, dopant, device, cons):
     u = Function(V)
     v = TestFunction(V)
 
+    # CellFunction to be used as a source term
     f = Function(V)
-
-    f.vector().array()[:] = np.array([i for i in dopant])
+    f.vector()[:] = np.array([i for i in dopant])
 
     # SiO2 dielectric constant = 3.8
     # SiO2 width is around 1nm
@@ -128,14 +128,14 @@ def poissonSolverTest(mesh, dopant, device, cons):
     # solve(F == 0, u, bc)
 
     u = interpolate(u, V)
-    potential = u.vector().array()
+    potential = u.vector()
     i = np.argsort(potential)
     #potential = np.array([j for j in potential[i]])
 
     potential = -1*potential[i]
     np.savetxt("vector.csv", -1*u.vector())
-    np.savetxt("array.csv", -1*u.vector().array())
-    u_array = -1 * u.vector().array()
+    np.savetxt("array.csv", -1*u.vector())
+    u_array = -1 * u.vector()
 
 
     

@@ -77,7 +77,7 @@ if __name__ == "__main__":
     if (len(sys.argv) > 1) and (sys.argv[1] == "debug"):
         import ptvsd
         print("waiting...")
-        ptvsd.enable_attach("my_secret", address=('127.0.0.1', 8000))
+        ptvsd.enable_attach(secret="my_secret", address=('127.0.0.1', 8000))
         ptvsd.wait_for_attach()
 
     nm = 1 * 10**-9

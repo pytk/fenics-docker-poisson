@@ -1,12 +1,13 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python: Attach",
             "type": "python",
             "request": "attach",
-            "localRoot": "/Users/takahiro/workspace/fenics-docker/schrodinger_poisson/",
-            "remoteRoot": "/home/fenics/shared/schrodinger_poisson/",
+            "localRoot": "/Users/pico/WorkSpace/fenics-docker-poisson/schrodinger_poisson/",
+            "remoteRoot": "/home/fenics/shared/",
             "port": 8000,
             "secret": "my_secret",
             "host": "127.0.0.1"
