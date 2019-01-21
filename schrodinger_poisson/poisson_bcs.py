@@ -81,7 +81,7 @@ def poissonSolverTest(mesh, dopant, device, cons):
     # calculate contact bias
     applied_volatage = 0.3
     u_gate = bias.bias(device, "Schottky", applied_volatage)
-    u_drain = bias.bias(device, "Ohmic", 0.5)
+    u_drain = bias.bias(device, "Ohmic", 0.0)
     u_source = bias.bias(device, "Ohmic", 0.0)
     u_bottom = bias.bias(device, "Schottky", 0.0)
 
@@ -133,8 +133,6 @@ def poissonSolverTest(mesh, dopant, device, cons):
     #potential = np.array([j for j in potential[i]])
 
     potential = -1*potential[i]
-    np.savetxt("vector.csv", -1*u.vector())
-    np.savetxt("array.csv", -1*u.vector())
     u_array = -1 * u.vector()
 
 
@@ -144,10 +142,6 @@ def poissonSolverTest(mesh, dopant, device, cons):
     ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
     ax.view_init(30, -120)
     plt.savefig("electrostatic_potential.png")
-
-    # Save solution in VTK format
-    file = File("poisson.pvd")
-    file << u
 
     print("finish!!!!!!!!!!!!!!!")
     

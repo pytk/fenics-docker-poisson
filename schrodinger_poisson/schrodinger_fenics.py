@@ -5,16 +5,25 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
-import sys
 
 # Warning: from fenics import * will import both `sym` and
 # `q` from FEniCS. We therefore import FEniCS first and then
 # overwrite these objects.
-from fenics import *
+from dolfin import *
 
+
+# make Hamiltonian for eigen value problem
 def makeHamiltonian(ny, dy, potential):
+    """
+    return Hamiltonian for solving eigen value problem
+
+    Args
+        - ny : number of vector in Interval Mesh
+        - dy : mesh particion in Interval Mesh
+        - potential : 1d potential in each slice of 2d electro static potential
+    """
     hamiltonian = np.zeros((ny+1, ny+1))
-    for i in range(1, ny+1):
+    for i in range(0, ny+1):
         for dx in range(-1, 1):
             j = i + dx
             v = 0.0
@@ -30,56 +39,69 @@ def makeHamiltonian(ny, dy, potential):
     return hamiltonian
 
 
-def schrodinger_test(mesh, potential, device, cons):
-
-    V = FunctionSpace(mesh, 'CG', 1)
-
-    # plot with matplotlib instead of paraview
-    n = V.dim()
-    d = mesh.geometry().dim()
-
-    dof_coordinates = V.tabulate_dof_coordinates()
-    dof_coordinates.resize((n, d))
-    dof_x = dof_coordinates[:, 0]
-    dof_y = dof_coordinates[:, 1]
-
-    N = device.ny 
-    L = device.yfi
-    x, dx = np.linspace(0, L, N), L / N
-
-    potential = np.reshape(potential, (device.ny+1,device.nx+1))
-
-    #potential = potential.flatten()
-    y, dy = np.linspace(0, L, N+1), L / N
-    wavefunction = np.empty((device.ny+1, device.nx+1))
-
-    for index in range(device.nx + 1):
-        vector = potential[:, index]
-        H = makeHamiltonian(N, dx, vector)
-        np.savetxt("hamiltonian.csv", H)
-        sys.exit()
-        w, v = np.linalg.eigh(H)
-        wavefunction[:, index] = v[:,0]
-        print(v[:,0])
-
-    """
-    #plt.plot(x, v.T[0] / simps(v.T[0]**2, x)**0.5, label="gradn state")
-    wavefunction = wavefunction.T
-    """
-
-    wavefunction = wavefunction.flatten()
-
-    fig = plt.figure()
-    ax = fig.gca(projection="3d")
-    ax.plot_trisurf(dof_x, dof_y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
-    ax.view_init(10, -220)
-    plt.savefig("wavefunction.png")
-
-    print("finish!!!!!!!!!!!!!!")
-
-
-
 def schrodinger(mesh, potential, device, cons):
+    """
+    return normalized hamiltonian with each eigen value (n = 1, 2, 3) and wave function in rectangler mesh
+
+    Args
+        - mesh : Rectangler Mesh (Dolfin Class)
+        - potential : 2d electro static potential calculated in Poisson Equation 
+        - device : Original Class of device structure
+        - cons : Original Class of constant value
+    """
+    subbands = 4
+    for subband in range(1, subbands):
+        # Function space of rectangle mesh
+        V = FunctionSpace(mesh, 'CG', 1)
+
+        # plot with matplotlib instead of paraview
+        n = V.dim()
+        d = mesh.geometry().dim()
+
+        # Excerpt of x-axis and y-axis
+        dof_coordinates = V.tabulate_dof_coordinates()
+        dof_coordinates.resize((n, d))
+        dof_x = dof_coordinates[:, 0]
+        dof_y = dof_coordinates[:, 1]
+
+        # dimention of rectangle mesh
+        N = device.ny 
+        L = device.yfi
+        x, dx = np.linspace(0, L, N), L / N
+
+        # reshape potential from 2d rectangle shape to 1d array
+        potential = np.reshape(potential, (device.ny+1,device.nx+1))
+
+        y, dy = np.linspace(0, L, N+1), L / N
+        wavefunction = np.empty((device.ny+1, device.nx+1))
+
+        # calculate eigen vector and eigen value for each slice of rectangle mesh
+        for index in range(device.nx + 1):
+            vector = potential[:, index]
+            H = makeHamiltonian(N, dx, vector)
+            w, v = np.linalg.eigh(H)
+            wavefunction[:, index] = v[:,subband]
+
+        # reshape 2d wavefunction array to 1d array
+        
+        X = np.linspace(device.xin, device.xfi, device.nx+1)
+        Y = np.linspace(device.yin, device.yfi, device.ny+1)
+        X, Y = np.meshgrid(X, Y)
+        print(X.shape)
+        print(wavefunction.shape)
+
+        # plot wavefunction
+        fig = plt.figure()
+        ax = fig.gca(projection="3d")
+        ax.plot_surface(X, Y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
+        ax.view_init(30, -120)
+        plt.savefig("img/wavefunction_" + str(subband) + ".png")
+
+
+# schrodinger equation to solve eigen value in triangle quantum well by using 
+# fenics eigen solver tool
+
+def schrodinger_fenics(mesh, potential, device, cons):
     """
     Schrodinger equation solver with FEniCS
     if given potential calculated by Poisson equation,
@@ -141,7 +163,7 @@ def schrodinger(mesh, potential, device, cons):
         #solve for eigenvalues
         eigensolver.solve()
 
-        r, c, rx, cx = eigensolver.get_eigenpair(0)
+        r, c, rx, cx = eigensolver.get_eigenpair(2)
 
         print("eigen value : " + str(r))
 
@@ -153,37 +175,7 @@ def schrodinger(mesh, potential, device, cons):
     fig = plt.figure()
     ax = fig.gca(projection="3d")
     ax.plot_trisurf(dof_x, dof_y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
-    ax.view_init(10, -220)
+    ax.view_init(10, -120)
     plt.savefig("wavefunction.png")
 
     print("finish!!!!!!!!!!!!!!")
-    
-
-"""
-        for i in range(0,subband_number):
-            eigen_value[i][index][:] = eigenvalue[i]
-            eigen_vector[i][index][:] = eigenvector[i]
-
-    electric_field = np.empty((subband_number, potentials.shape[0] ,potentials.shape[1]))
-
-    for i in range(0,subband_number):
-        arr = np.array(eigen_vector[i][:][:])
-        arr = arr.T
-        eigen_vector[i][:][:] = arr
-
-        for (index, energy) in enumerate(eigen_value[i][:][:]):
-            electric_field[i][index][:] = np.gradient(eigen_value[i][index][:])
-
-        arr = np.array(electric_field[i][:][:])
-        arr = arr.T
-        electric_field[i][:][:] = arr
-
-    return electric_field, eigen_vector
-"""
-
-        
-
-
-    
-
-
