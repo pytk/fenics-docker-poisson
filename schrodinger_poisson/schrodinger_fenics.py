@@ -13,7 +13,7 @@ from dolfin import *
 
 
 # make Hamiltonian for eigen value problem
-def makeHamiltonian(ny, dy, potential):
+def makeHamiltonian(ny, dy, potential, device, cons):
     """
     return Hamiltonian for solving eigen value problem
 
@@ -22,22 +22,26 @@ def makeHamiltonian(ny, dy, potential):
         - dy : mesh particion in Interval Mesh
         - potential : 1d potential in each slice of 2d electro static potential
     """
+
+    hbar=1.05457266 * 10**-34
     hamiltonian = np.zeros((ny+1, ny+1))
+    constant_value = (hbar*hbar)/(2.0*dy*dy)
+    effective_mass = device.material["electron_effective_mass"] * cons.M
     for i in range(0, ny+1):
         for dx in range(-1, 1):
             j = i + dx
             v = 0.0
             if dx == 0:
-                v = (2/dy**2 + potential[i])
+                v = (2*constant_value/effective_mass + potential[i]*cons.Q)
             elif dx == 1:
-                v = -1/dy**2
+                v = -1*constant_value/effective_mass
             elif dx == -1:
-                v = -1/dy**2
+                v = -1*constant_value/effective_mass
+            else:
+                v = 0
+            hamiltonian[i, j] = v
 
-            if j >= 1 and j <= ny+1:
-                hamiltonian[i, j] = v
     return hamiltonian
-
 
 def schrodinger(mesh, potential, device, cons):
     """
@@ -49,8 +53,12 @@ def schrodinger(mesh, potential, device, cons):
         - device : Original Class of device structure
         - cons : Original Class of constant value
     """
-    subbands = 4
-    for subband in range(1, subbands):
+    subbands = 5
+    # reshape potential from 2d rectangle shape to 1d array
+    potential = np.array([i for i in potential.array()])
+    potential = np.reshape(potential, (device.ny+1,device.nx+1))
+
+    for subband in range(0, subbands):
         # Function space of rectangle mesh
         V = FunctionSpace(mesh, 'CG', 1)
 
@@ -69,26 +77,24 @@ def schrodinger(mesh, potential, device, cons):
         L = device.yfi
         x, dx = np.linspace(0, L, N), L / N
 
-        # reshape potential from 2d rectangle shape to 1d array
-        potential = np.reshape(potential, (device.ny+1,device.nx+1))
-
         y, dy = np.linspace(0, L, N+1), L / N
-        wavefunction = np.empty((device.ny+1, device.nx+1))
+        wavefunction = np.zeros((device.ny+1, device.nx+1))
 
         # calculate eigen vector and eigen value for each slice of rectangle mesh
         for index in range(device.nx + 1):
-            vector = potential[:, index]
-            H = makeHamiltonian(N, dx, vector)
-            w, v = np.linalg.eigh(H)
-            wavefunction[:, index] = v[:,subband]
+            if(device.gate_ini < index*device.dx and index*device.dx < device.gate_fin):
+                vector = potential[:, index]
+                H = makeHamiltonian(N, dx, vector, device, cons)
+                w, v = np.linalg.eigh(H)
+                temp = v[:, subband]
+                temp = temp[::-1]
+                wavefunction[:, index] = temp
 
         # reshape 2d wavefunction array to 1d array
         
         X = np.linspace(device.xin, device.xfi, device.nx+1)
         Y = np.linspace(device.yin, device.yfi, device.ny+1)
         X, Y = np.meshgrid(X, Y)
-        print(X.shape)
-        print(wavefunction.shape)
 
         # plot wavefunction
         fig = plt.figure()
@@ -96,6 +102,8 @@ def schrodinger(mesh, potential, device, cons):
         ax.plot_surface(X, Y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
         ax.view_init(30, -120)
         plt.savefig("img/wavefunction_" + str(subband) + ".png")
+
+    print("Schrodinger Equation got finished!")
 
 
 # schrodinger equation to solve eigen value in triangle quantum well by using 

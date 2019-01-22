@@ -53,12 +53,14 @@ def poissonSolverTest(mesh, dopant, device, cons):
     nuemann = Nuemann()
 
     # Initialize mesh function for interior domains
-    domains = MeshFunction("size_t", mesh, mesh.topology().dim(), 0)
+    #domains = MeshFunction("size_t", mesh, mesh.topology().dim(), 0)
+    domains = CellFunction("size_t", mesh)
     domains.set_all(0)
     channel.mark(domains, 1)
 
     # Initialize mesh function for boundary domains
-    boundaries = MeshFunction("size_t", mesh, mesh.topology().dim()-1, 0)
+    #boundaries = MeshFunction("size_t", mesh, mesh.topology().dim()-1, 0)
+    boundaries = FacetFunction("size_t", mesh)
     boundaries.set_all(0)
     gate.mark(boundaries, 1)
     drain.mark(boundaries, 2)
@@ -79,7 +81,7 @@ def poissonSolverTest(mesh, dopant, device, cons):
 
 
     # calculate contact bias
-    applied_volatage = 0.3
+    applied_volatage = 0.5
     u_gate = bias.bias(device, "Schottky", applied_volatage)
     u_drain = bias.bias(device, "Ohmic", 0.0)
     u_source = bias.bias(device, "Ohmic", 0.0)
@@ -128,22 +130,23 @@ def poissonSolverTest(mesh, dopant, device, cons):
     # solve(F == 0, u, bc)
 
     u = interpolate(u, V)
-    potential = u.vector()
-    i = np.argsort(potential)
+    #potential = u.vector()
+    #i = np.argsort(potential)
     #potential = np.array([j for j in potential[i]])
 
-    potential = -1*potential[i]
+    #potential = -1*potential[i]
     u_array = -1 * u.vector()
 
 
     
     fig = plt.figure()
     ax = fig.gca(projection="3d")
-    ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
+    ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=False, cmap=plt.cm.CMRmap)
     ax.view_init(30, -120)
+    ax.set_zlim3d(min(u_array), max(u_array))
     plt.savefig("electrostatic_potential.png")
 
-    print("finish!!!!!!!!!!!!!!!")
+    print("Poisson Equation got done!!!")
     
 
-    return potential
+    return u_array
