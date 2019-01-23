@@ -36,6 +36,46 @@ class Device(object):
         mesh = RectangleMesh(Point(self.xin, self.yin), Point(self.xfi, self.yfi), self.nx, self.ny)
         return mesh
 
+    def ChangeDolfinVectorToNumpy(self, array1, array2, array3):
+        """
+        change fenics PETSc vector into numpy array. The original PETSc vector itself is really
+        unuseful to excerpt or get slice from 2d original vector.
+
+        Args:
+            dof_coordinates = V.tabulate_dof_coordinates()
+            dof_coordinates.resize((n, d))
+            dof_x = dof_coordinates[:, 0]
+            dof_y = dof_coordinates[:, 1]
+
+            - array1: dof_x
+            - array2: dof_y
+            - array3: potential
+
+        Return: 
+            array: (2D numpy array include electro static potetial)
+
+            you can use returned array without any change
+        """
+        size = np.array(array3).shape[0]
+        # check if all array has same dimention
+        assert (np.array(array1).shape[0] == np.array(array3).shape[0] and np.array(array1).shape[0] == np.array(array3).shape[0]), "Not mutch array size!"
+        array = [[a, b, c] for a, b, c in zip(array1, array2, array3)]
+
+        # sort array with composite key value (x, y)
+        sorted_array = sorted(array, key=lambda x: (x[0], x[1]))
+        array = np.array(sorted_array)
+
+        # reshape like [x, y, potential]
+        array = np.reshape(array, (size, 3))
+
+        # excerpt only potential
+        array = array[:, 2]
+
+        array = np.reshape(array, (self.nx+1, self.ny+1))
+        array = array.T
+
+        return array
+
     def craeteChargeDistribution(self, doner, constant):
         """
         Args
@@ -77,8 +117,10 @@ if __name__ == "__main__":
     if (len(sys.argv) > 1) and (sys.argv[1] == "debug"):
         import ptvsd
         print("waiting...")
-        ptvsd.enable_attach(secret="my_secret", address=('127.0.0.1', 8000))
+        address = ('127.0.0.1', 8000)
+        ptvsd.enable_attach(address)
         ptvsd.wait_for_attach()
+        print("attached")
 
     nm = 1 * 10**-9
 

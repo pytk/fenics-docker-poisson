@@ -29,8 +29,10 @@ And we assume the device structure is like below
 this project is still going on. Eventually, I'm going to apply to electron transport problem with Monte Carlo Simlation.
 
 
-### wave function???
+## Schrodinger Equation 
 
-![wavefunction](https://user-images.githubusercontent.com/27273842/51398847-f6672300-1b87-11e9-8556-8a78522c325e.png)
+calculate schrodinger equation in 1d slice of 2d electro static potential array. you can get 2d electro static potential from 2d Poisson Equation.
+
+![wavefunction_0](https://user-images.githubusercontent.com/27273842/51590843-b65cc300-1f2e-11e9-99be-55d224956ef7.png)
 
 

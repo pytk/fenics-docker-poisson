@@ -40,7 +40,7 @@ def makeHamiltonian(ny, dy, potential, device, cons):
             else:
                 v = 0
             hamiltonian[i, j] = v
-
+    np.savetxt("hamiltonian.csv", hamiltonian)
     return hamiltonian
 
 def schrodinger(mesh, potential, device, cons):
@@ -55,31 +55,31 @@ def schrodinger(mesh, potential, device, cons):
     """
     subbands = 5
     # reshape potential from 2d rectangle shape to 1d array
-    potential = np.array([i for i in potential.array()])
-    potential = np.reshape(potential, (device.ny+1,device.nx+1))
+    #potential = np.array([i for i in potential])
+    #potential = np.reshape(potential, (device.ny+1,device.nx+1))
+
+    # Function space of rectangle mesh
+    V = FunctionSpace(mesh, 'CG', 1)
+
+    # plot with matplotlib instead of paraview
+    n = V.dim()
+    d = mesh.geometry().dim()
+
+    # Excerpt of x-axis and y-axis
+    dof_coordinates = V.tabulate_dof_coordinates()
+    dof_coordinates.resize((n, d))
+    dof_x = dof_coordinates[:, 0]
+    dof_y = dof_coordinates[:, 1]
+
+    # dimention of rectangle mesh
+    N = device.ny 
+    L = device.yfi
+    x, dx = np.linspace(0, L, N), L / N
+
+    y, dy = np.linspace(0, L, N+1), L / N
+    wavefunction = np.zeros((device.ny+1, device.nx+1))
 
     for subband in range(0, subbands):
-        # Function space of rectangle mesh
-        V = FunctionSpace(mesh, 'CG', 1)
-
-        # plot with matplotlib instead of paraview
-        n = V.dim()
-        d = mesh.geometry().dim()
-
-        # Excerpt of x-axis and y-axis
-        dof_coordinates = V.tabulate_dof_coordinates()
-        dof_coordinates.resize((n, d))
-        dof_x = dof_coordinates[:, 0]
-        dof_y = dof_coordinates[:, 1]
-
-        # dimention of rectangle mesh
-        N = device.ny 
-        L = device.yfi
-        x, dx = np.linspace(0, L, N), L / N
-
-        y, dy = np.linspace(0, L, N+1), L / N
-        wavefunction = np.zeros((device.ny+1, device.nx+1))
-
         # calculate eigen vector and eigen value for each slice of rectangle mesh
         for index in range(device.nx + 1):
             if(device.gate_ini < index*device.dx and index*device.dx < device.gate_fin):
@@ -87,8 +87,7 @@ def schrodinger(mesh, potential, device, cons):
                 H = makeHamiltonian(N, dx, vector, device, cons)
                 w, v = np.linalg.eigh(H)
                 temp = v[:, subband]
-                temp = temp[::-1]
-                wavefunction[:, index] = temp
+                wavefunction[:, index] = -1*temp
 
         # reshape 2d wavefunction array to 1d array
         
@@ -100,7 +99,7 @@ def schrodinger(mesh, potential, device, cons):
         fig = plt.figure()
         ax = fig.gca(projection="3d")
         ax.plot_surface(X, Y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
-        ax.view_init(30, -120)
+        ax.view_init(10, -120)
         plt.savefig("img/wavefunction_" + str(subband) + ".png")
 
     print("Schrodinger Equation got finished!")
