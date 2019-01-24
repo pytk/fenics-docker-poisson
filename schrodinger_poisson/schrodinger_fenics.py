@@ -40,7 +40,6 @@ def makeHamiltonian(ny, dy, potential, device, cons):
             else:
                 v = 0
             hamiltonian[i, j] = v
-    np.savetxt("hamiltonian.csv", hamiltonian)
     return hamiltonian
 
 def schrodinger(mesh, potential, device, cons):
@@ -103,86 +102,3 @@ def schrodinger(mesh, potential, device, cons):
         plt.savefig("img/wavefunction_" + str(subband) + ".png")
 
     print("Schrodinger Equation got finished!")
-
-
-# schrodinger equation to solve eigen value in triangle quantum well by using 
-# fenics eigen solver tool
-
-def schrodinger_fenics(mesh, potential, device, cons):
-    """
-    Schrodinger equation solver with FEniCS
-    if given potential calculated by Poisson equation,
-    it can compute wave function and eigen vector meaning
-    fixed potential.
-
-    Args
-    ---------------
-    potential: (1D numpy array) alculated by poisson solver
-    """
-    wavefunction = np.empty((device.ny+1, device.nx+1))
-    potential = np.reshape(potential, (device.ny+1,device.nx+1))
-
-    # plot with matplotlib instead of paraview
-    V = FunctionSpace(mesh, 'Lagrange', 1)
-    n = V.dim()
-    d = mesh.geometry().dim()
-
-    dof_coordinates = V.tabulate_dof_coordinates()
-    dof_coordinates.resize((n, d))
-    dof_x = dof_coordinates[:, 0]
-    dof_y = dof_coordinates[:, 1]
-
-    for index in range(device.nx + 1):
-        mesh = IntervalMesh(device.ny, 0, device.yfi)
-        vector = potential[:, index]
-        V = FunctionSpace(mesh, 'Lagrange', 1)
-
-        def boudary(x, on_boundary):
-            return on_boundary
-
-        bc = DirichletBC(V, 0, boudary)
-
-        # difine function
-        u = TrialFunction(V)
-        v = TestFunction(V)
-        Potenial = Function(V)
-        Potenial.vector().array()[:] = vector
-
-        # difine problem
-        temp = -1 * pow(cons.HBAR, 2) / (2*device.material["electron_effective_mass"]*cons.M)
-        a = (inner(temp * grad(u), grad(v)) + Potenial*u*v)*dx
-        m = u*v*dx
-
-        # assemble stiffness matrix
-        A = PETScMatrix()
-        assemble(a, tensor=A)
-        M = PETScMatrix()
-        assemble(m, tensor=M)
-        bc.apply(A)
-        bc.apply(M)
-
-        # create eigensolver
-        eigensolver = SLEPcEigenSolver(A, M)
-        eigensolver.parameters['spectrum'] = 'smallest magnitude'
-        eigensolver.parameters['solver'] = 'lapack'
-        eigensolver.parameters['tolerance'] = 1e-15
-
-        #solve for eigenvalues
-        eigensolver.solve()
-
-        r, c, rx, cx = eigensolver.get_eigenpair(2)
-
-        print("eigen value : " + str(r))
-
-        #assign eigenvector to function
-        wavefunction[:, index] = rx
-
-
-    wavefunction = wavefunction.flatten()
-    fig = plt.figure()
-    ax = fig.gca(projection="3d")
-    ax.plot_trisurf(dof_x, dof_y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.CMRmap)
-    ax.view_init(10, -120)
-    plt.savefig("wavefunction.png")
-
-    print("finish!!!!!!!!!!!!!!")

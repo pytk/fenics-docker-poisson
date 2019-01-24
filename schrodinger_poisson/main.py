@@ -27,6 +27,7 @@ class Device(object):
         self.drain = structure["drain"]
         self.material = material
         self.doner = structure["doner"]
+        self.nplus = structure["nplus"]
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.yin, self.yfi)
@@ -112,6 +113,7 @@ class ConstantValue(object):
         self.T = 300
         self.M = 9.10938356 * 10**-31
         self.KB = 1.38064852* 10**-23
+        self.Number_of_Particle = 100000
 
 if __name__ == "__main__":
     if (len(sys.argv) > 1) and (sys.argv[1] == "debug"):
@@ -137,7 +139,8 @@ if __name__ == "__main__":
         "gate_fin": 250 * nm,
         "src": 40 * nm,
         "drain": 260 * nm,
-        "doner": 1.0 * 10**21 
+        "doner": 1.0 * 10**21,
+        "nplus": [50 * nm, 250 * nm] 
     }
 
     # doner density about n++ layer

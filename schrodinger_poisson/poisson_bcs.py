@@ -112,8 +112,11 @@ def poissonSolverTest(mesh, dopant, device, cons):
     v = TestFunction(V)
 
     # CellFunction to be used as a source term
-    f = Function(V)
-    f.vector()[:] = np.array([i for i in dopant])
+    #f = Function(V)
+    #f.vector()[:] = np.array([i for i in dopant])
+    ini = device.nplus[0]
+    fin = device.nplus[1]
+    f = Expression('ini < x[0] && x[0] < fin ? 100 : 1000', degree=1, ini=ini, fin=fin)
 
     # SiO2 dielectric constant = 3.8
     # SiO2 width is around 1nm
