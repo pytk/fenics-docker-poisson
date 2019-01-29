@@ -7,12 +7,14 @@ from mpl_toolkits.mplot3d import Axes3D
 from fenics import *
 
 import schrodinger_fenics
+import density
 import poisson_bcs
 import plotter
 import sys
+import time
 
 class Device(object):
-    def __init__(self, structure, material):
+    def __init__(self, structure, material, flag):
         self.xin = structure["xin"]
         self.yin = structure["yin"]
         self.xfi = structure["xfi"]
@@ -28,6 +30,7 @@ class Device(object):
         self.material = material
         self.doner = structure["doner"]
         self.nplus = structure["nplus"]
+        self.flag = flag
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.yin, self.yfi)
@@ -116,6 +119,7 @@ class ConstantValue(object):
         self.Number_of_Particle = 100000
 
 if __name__ == "__main__":
+    start = time.time()
     if (len(sys.argv) > 1) and (sys.argv[1] == "debug"):
         import ptvsd
         print("waiting...")
@@ -173,13 +177,21 @@ if __name__ == "__main__":
         "intrinsic_carrier_concentration": 2.0 * 10**19,
         "effective_conduction_band_density": 1.0 * 10**25,
         "effective_valence_band_density": 5.0 * 10**24,
+        "non-parabolicity": 0.3,
         # metal (TaN)
         "metal_work_function": 5.43
     }
 
+    # assume initial fermi energy is 4.3 eV
+    fermi_energy = 4.3
+
     constant = ConstantValue()
 
-    device = Device(structure, material)
+    plot_flag = []
+    for arg in sys.argv:
+        plot_flag.append(arg)
+
+    device = Device(structure, material, plot_flag)
 
     rectangle_mesh = device.RectangleMeshCreate()
 
@@ -189,18 +201,29 @@ if __name__ == "__main__":
 
     potential = poisson_bcs.poissonSolverTest(rectangle_mesh, dopant, device, constant)
     #plotter.plot_potential_distribution(device, rectangle_mesh, potential)
+    
+    wavefunction, eigenvalue = schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant)
 
-    """
-    V = FunctionSpace(rectangle_mesh, 'CG', 1)
-    new_potential = Function(V)
-    new_potential.vector()[:] = np.array([-constant.Q*j for j in potential.vector()[:]])
-    u = potential.vector()[:]
-    temp = np.array([])
-    for i in range(rectangle_mesh.num_vertices()):
-        temp = np.append(temp, u[i])
-    potential = np.reshape(temp, (device.nx+1,device.ny+1))
-    new_potential = np.reshape(new_potential, (device.nx+1,device.ny+1))
-    """
-    
-    schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant)
-    
+    # reinitialize electron distribution
+    electron_distribution = np.zeros((device.ny+1, device.nx+1))
+
+    for index in range(device.nx + 1):
+        # calculate occupation state of each subband
+        # return a numpy array of occuaption state in each subband
+        nk = density.electronOccupationState(eigenvalue[:, index], fermi_energy)
+        n = density.electronDensityFunction(wavefunction[:, index], nk, eigenvalue[:, index])
+        electron_distribution[:, index] = n
+
+    # plot electron distribution
+    if ("density" in device.flag):
+        np.savetxt("electron_distribution.csv", electron_distribution)
+        fig = plt.figure()
+        X = np.linspace(device.xin, device.xfi, device.nx+1)
+        Y = np.linspace(device.yin, device.yfi, device.ny+1)
+        X, Y = np.meshgrid(X, Y)
+        plt.subplot(1,1,1)
+        plt.pcolor(X, Y, electron_distribution)
+        plt.savefig("img/electron_distribution.png")
+
+    end = time.time()
+    print("elpsed_time:{}".format(end - start) + "[sec]")

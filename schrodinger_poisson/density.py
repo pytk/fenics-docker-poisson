@@ -10,21 +10,23 @@ hbar=1.05457266 * 10**-34
 # germanium effective mass
 mass = 0.041 * cons.M
 # m* / (pi * hbar^2)
-temp1 = mass / (cons.PI * hbar)
+temp1 = mass / (cons.PI * hbar**2)
 # Kb * T
-temp2 = cons.KB * cons.T
+kb = 8.6173303 * 10**-5
+temp2 = kb * cons.T
+
+Q = cons.Q
 
 
 # function to return the electron occuypation state nk
+# conduction electron concentrairion per unit box / m^-3
 def electronOccupationState(eigenvalues, fermiEnergy):
     """
     return electron occupation state for each subband meaning just number of suband value sets
     """
-    print("finding nk....")
     nk = []
     for eigenvalue in eigenvalues:
-        result = mpmath.quad(lambda x: temp1/(1 + mpmath.exp((x-fermiEnergy)/cons.T/cons.KB)), [eigenvalue, 2*eigenvalue + fermiEnergy])
-        print(result)
+        result = temp1*mpmath.quad(lambda x: 1/(1 + mpmath.exp((x-fermiEnergy)/temp2)), [eigenvalue/Q, float('inf')])
         nk.append(result)
     return nk
 
@@ -37,7 +39,6 @@ def electronDensityFunction(eigenvectors, nk, eigenvalues):
         - eigenvectors: 1d wavefunction array of each slice
         - nk: electron occupation state
     """
-    print("Finding the elctron density, nk")
     result = []
     for i in range(len(eigenvalues)):
         kth_term = [(wavefunction * wavefunction * nk[i]) for wavefunction in eigenvectors]
