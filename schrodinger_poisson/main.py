@@ -179,7 +179,8 @@ if __name__ == "__main__":
         "effective_valence_band_density": 5.0 * 10**24,
         "non-parabolicity": 0.3,
         # metal (TaN)
-        "metal_work_function": 5.43
+        "metal_work_function": 5.43,
+        "oxyde_affinity": 0.75
     }
 
     # assume initial fermi energy is 4.3 eV
@@ -201,6 +202,17 @@ if __name__ == "__main__":
 
     potential = poisson_bcs.poissonSolverTest(rectangle_mesh, dopant, device, constant)
     #plotter.plot_potential_distribution(device, rectangle_mesh, potential)
+
+    if ("poisson" in device.flag):
+        X = np.linspace(device.xin, device.xfi, device.nx+1)
+        Y = np.linspace(device.yin, device.yfi, device.ny+1)
+        X, Y = np.meshgrid(X, Y)
+        # plot wavefunction
+        fig = plt.figure()
+        ax = fig.gca(projection="3d")
+        ax.plot_surface(X, Y, potential, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
+        ax.view_init(10, -120)
+        plt.savefig("img/electrostatic_potential.png")
     
     wavefunction, eigenvalue = schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant)
 

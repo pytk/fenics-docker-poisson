@@ -19,7 +19,7 @@ import matplotlib.animation as animation
 # overwrite these objects.
 from dolfin import *
 
-def poissonSolverTest(mesh, dopant, device, cons):
+def poissonSolverTest(mesh, dopant, device, cons, electron_density):
 
     class Channel(SubDomain):
         def inside(self, x, on_boundary):
@@ -110,6 +110,9 @@ def poissonSolverTest(mesh, dopant, device, cons):
     # Difine variational problem
     u = Function(V)
     v = TestFunction(V)
+    electron = Function(V)
+
+    electron.vector()[:] = np.array([i for i in electron_density])
 
     # CellFunction to be used as a source term
     #f = Function(V)
@@ -125,7 +128,7 @@ def poissonSolverTest(mesh, dopant, device, cons):
     ge_eps = 16
 
     F = inner(ge_eps*grad(u), grad(v))*dx(1) -zero*v*ds(5)
-    L = cons.Q/cons.EPS*f*v*dx(1)
+    L = cons.Q/cons.EPS*(f - electron)*v*dx(1)
     # - ((eps * (u_gate - u)/ 10**-9))*v*ds(1)
 
     # Compute solution
@@ -139,18 +142,11 @@ def poissonSolverTest(mesh, dopant, device, cons):
 
     #potential = -1*potential[i]
     u_array = -1 * u.vector()
-    
-    if ("poisson" in device.flag):
-        fig = plt.figure()
-        ax = fig.gca(projection="3d")
-        ax.plot_trisurf(dof_x, dof_y, u_array, linewidth=0.2, antialiased=False, cmap=plt.cm.coolwarm)
-        ax.view_init(30, -120)
-        ax.set_zlim3d(min(u_array), max(u_array))
-        plt.savefig("electrostatic_potential.png")
 
     print("Poisson Equation got done!!!")
 
     array = device.ChangeDolfinVectorToNumpy(dof_x, dof_y, u_array)
-    
 
+    array[0, :] += device.material["electron_affinity"] - device.material["oxyde_affinity"]
+    
     return array
