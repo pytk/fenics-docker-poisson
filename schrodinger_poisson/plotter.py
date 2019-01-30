@@ -17,104 +17,22 @@ class Constant(object):
         self.M = 9.10938356 * 10**-31
         self.KB = 1.38064852* 10**-23
 
-def electron_density(device, mesh, u):
-    x = np.array([])
-    y = np.array([])
-    z = np.array([])
-    u_array = u
-    grid = mesh.coordinates()
-    for i in range(mesh.num_vertices()):
-        x = np.append(x, grid[i][0])
-        y = np.append(y, grid[i][1])
-        z = np.append(z, u_array[i])
-    X = np.reshape(x, (device.ny+1,device.nx+1)) 
-    Y = np.reshape(y, (device.ny+1,device.nx+1))
-    Z = np.reshape(z, (device.ny+1,device.nx+1))
+def electrostaticPotential(device, potential, iterate):
+    X = np.linspace(device.xin, device.xfi, device.nx+1)
+    Y = np.linspace(device.yin, device.yfi, device.ny+1)
+    X, Y = np.meshgrid(X, Y)
+    # plot wavefunction
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
-    fig.colorbar(surf)
-    #ax.set_zlim(2.52*10**19, 10)
-    ax.set_title("Electro Static Potential by FEniCS(PDEs)")
-    fig.show()
-    plt.savefig("electron_density.png")
+    ax = fig.gca(projection="3d")
+    ax.plot_surface(X, Y, potential, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
+    ax.view_init(10, -120)
+    plt.savefig("img/electrostatic_potential" + "_" + str(iterate) + ".png")
 
-def plot_potential_distribution(device, mesh, u):
-    # output potential calculated with FEniCS
-    constant = Constant()
-    
-    output = open("out.xyz", "w+")
-    cordinate = mesh.coordinates()
-    u_array = u.vector()[:]
-    count = 0
-    for i in range(mesh.num_vertices()-1):
-        output.write('%8g, %8g, %8g\n' % (cordinate[i][0], cordinate[i][1], u_array[i]))
-        count += 1
-        if(count >= device.nx+1):
-            count = 0
-            output.write('\n')
-    output.close()
-    
-
-    # plot 3d figure in x-y electro static potential with matplot lib
-    x = np.array([])
-    y = np.array([])
-    z = np.array([])
-    u_array = u.vector()[:]
-    grid = mesh.coordinates()
-    for i in range(mesh.num_vertices()):
-        x = np.append(x, grid[i][0])
-        y = np.append(y, grid[i][1])
-        z = np.append(z, u_array[i])
-    X = np.reshape(x, (device.ny+1,device.nx+1)) 
-    Y = np.reshape(y, (device.ny+1,device.nx+1))
-    Z = np.reshape(z, (device.ny+1,device.nx+1))
+def electronDistribution(device, electron_distribution, iterate):
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
-    fig.colorbar(surf)
-    #ax.set_zlim(2.52*10**19, 10)
-    ax.set_title("Electro Static Potential by FEniCS(PDEs)")
-    fig.show()
-    plt.savefig("non-liner-poisson3d.png")
-
-
-def plot_wave_function(device, mesh, wavefunction):
-    x = np.array([])
-    y = np.array([])
-    grid = mesh.coordinates()
-    for i in range(mesh.num_vertices()):
-        x = np.append(x, grid[i][0])
-        y = np.append(y, grid[i][1])
-    X = np.reshape(x, (device.nx+1,device.ny+1)) 
-    Y = np.reshape(y, (device.nx+1,device.ny+1))
-
-    for i in range(0,3):
-        Z = wavefunction[i][:][:]
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        surf = ax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
-        fig.colorbar(surf)
-        ax.set_title("Electro Static Potential by FEniCS(PDEs)")
-        fig.show()
-        plt.savefig("wave-function3d" + "-" + str(i) + ".png")
-
-def plot_electric_field(device, mesh, electric_field):
-    x = np.array([])
-    y = np.array([])
-    grid = mesh.coordinates()
-    for i in range(mesh.num_vertices()):
-        x = np.append(x, grid[i][0])
-        y = np.append(y, grid[i][1])
-    X = np.reshape(x, (device.nx+1,device.ny+1)) 
-    Y = np.reshape(y, (device.nx+1,device.ny+1))
-
-    for i in range(0,3):
-        Z = electric_field[i][:][:]
-        wfig = plt.figure()
-        wax = wfig.add_subplot(111, projection='3d')
-        wsurf = wax.plot_surface(X ,Y, Z, cmap='bwr', linewidth=0)
-        wfig.colorbar(wsurf)
-        wax.set_title("wave function by FEniCS(PDEs)")
-        wfig.show()
-        plt.savefig("wave-function3d" + "-" + str(i) + ".png")
+    X = np.linspace(device.xin, device.xfi, device.nx+1)
+    Y = np.linspace(device.yin, device.yfi, device.ny+1)
+    X, Y = np.meshgrid(X, Y)
+    plt.subplot(1,1,1)
+    plt.pcolor(X, Y, electron_distribution)
+    plt.savefig("img/electron_distribution" + "_" + str(iterate) + ".png")

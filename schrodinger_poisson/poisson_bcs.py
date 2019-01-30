@@ -19,7 +19,7 @@ import matplotlib.animation as animation
 # overwrite these objects.
 from dolfin import *
 
-def poissonSolverTest(mesh, dopant, device, cons, electron_density):
+def poissonSolverTest(mesh, dopant, device, cons, electron):
 
     class Channel(SubDomain):
         def inside(self, x, on_boundary):
@@ -110,9 +110,6 @@ def poissonSolverTest(mesh, dopant, device, cons, electron_density):
     # Difine variational problem
     u = Function(V)
     v = TestFunction(V)
-    electron = Function(V)
-
-    electron.vector()[:] = np.array([i for i in electron_density])
 
     # CellFunction to be used as a source term
     #f = Function(V)
@@ -120,6 +117,8 @@ def poissonSolverTest(mesh, dopant, device, cons, electron_density):
     ini = device.nplus[0]
     fin = device.nplus[1]
     f = Expression('ini < x[0] && x[0] < fin ? 100 : 1000', degree=1, ini=ini, fin=fin)
+    doner = Function(V)
+    doner.vector()[:] = np.array([nd for nd in doner.vector()])
 
     # SiO2 dielectric constant = 3.8
     # SiO2 width is around 1nm
@@ -128,7 +127,7 @@ def poissonSolverTest(mesh, dopant, device, cons, electron_density):
     ge_eps = 16
 
     F = inner(ge_eps*grad(u), grad(v))*dx(1) -zero*v*ds(5)
-    L = cons.Q/cons.EPS*(f - electron)*v*dx(1)
+    L = cons.Q/cons.EPS*electron*v*dx(1)
     # - ((eps * (u_gate - u)/ 10**-9))*v*ds(1)
 
     # Compute solution

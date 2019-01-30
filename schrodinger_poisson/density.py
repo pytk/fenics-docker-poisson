@@ -46,5 +46,6 @@ def electronDensityFunction(eigenvectors, nk, eigenvalues):
 
     # sigma with each eigen value
     n = np.sum(result, axis=0)
-    return n
+    # return number of electron in a cell (1 nm)
+    return n * 10**-27
 
