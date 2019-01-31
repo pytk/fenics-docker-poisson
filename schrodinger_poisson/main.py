@@ -184,7 +184,7 @@ if __name__ == "__main__":
     }
 
     # assume initial fermi energy is 4.3 eV
-    fermi_energy = 4.3
+    fermi_energy = 3.5
 
     constant = ConstantValue()
 
@@ -198,44 +198,54 @@ if __name__ == "__main__":
 
     dopant = device.craeteChargeDistribution(doner, constant)
 
-    #plotter.electron_density(device, rectangle_mesh, dopant)
+    V = FunctionSpace(rectangle_mesh, 'CG', 1)
 
-    potential = poisson_bcs.poissonSolverTest(rectangle_mesh, dopant, device, constant)
-    #plotter.plot_potential_distribution(device, rectangle_mesh, potential)
+    electron_distribution = Constant(0.0)
 
-    if ("poisson" in device.flag):
-        X = np.linspace(device.xin, device.xfi, device.nx+1)
-        Y = np.linspace(device.yin, device.yfi, device.ny+1)
-        X, Y = np.meshgrid(X, Y)
-        # plot wavefunction
-        fig = plt.figure()
-        ax = fig.gca(projection="3d")
-        ax.plot_surface(X, Y, potential, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
-        ax.view_init(10, -120)
-        plt.savefig("img/electrostatic_potential.png")
-    
-    wavefunction, eigenvalue = schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant)
+    iterate = 0
 
-    # reinitialize electron distribution
-    electron_distribution = np.zeros((device.ny+1, device.nx+1))
+    while iterate < 5:
+        print("Loop No." + str(iterate) + " get started")
+        print("----------------------------------------")
 
-    for index in range(device.nx + 1):
-        # calculate occupation state of each subband
-        # return a numpy array of occuaption state in each subband
-        nk = density.electronOccupationState(eigenvalue[:, index], fermi_energy)
-        n = density.electronDensityFunction(wavefunction[:, index], nk, eigenvalue[:, index])
-        electron_distribution[:, index] = n
+        potential = poisson_bcs.poissonSolverTest(rectangle_mesh, dopant, device, constant, electron_distribution)
+        #plotter.plot_potential_distribution(device, rectangle_mesh, potential)
 
-    # plot electron distribution
-    if ("density" in device.flag):
-        np.savetxt("electron_distribution.csv", electron_distribution)
-        fig = plt.figure()
-        X = np.linspace(device.xin, device.xfi, device.nx+1)
-        Y = np.linspace(device.yin, device.yfi, device.ny+1)
-        X, Y = np.meshgrid(X, Y)
-        plt.subplot(1,1,1)
-        plt.pcolor(X, Y, electron_distribution)
-        plt.savefig("img/electron_distribution.png")
+        if ("poisson" in device.flag):
+            plotter.electrostaticPotential(device, potential, iterate)
+        
+        wavefunction, eigenvalue = schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant, iterate)
+
+        # reinitialize electron distribution
+        electron_density = np.zeros((device.ny+1, device.nx+1))
+
+        for index in range(device.nx + 1):
+            # calculate occupation state of each subband
+            # return a numpy array of occuaption state in each subband
+            nk = density.electronOccupationState(eigenvalue[:, index], fermi_energy)
+            n = density.electronDensityFunction(wavefunction[:, index], nk, eigenvalue[:, index])
+            electron_density[:, index] = n
+
+        # plot electron distribution
+        if ("density" in device.flag):
+            plotter.electronDistribution(device, electron_density, iterate)
+
+        # check if electron density get convergence or not
+        density_error = []
+        electron_density = electron_density.flatten()
+        if (iterate > 0):
+            for el in range(len(electron_density)):
+                density_error.append(electron_distribution.vector()[el] - electron_density[el])
+            density_error = abs(sum(density_error)/len(density_error))
+
+            print("Electron Density Error is: " + str(density_error[0]))
+
+        electron_distribution = Function(V)
+        # add electron to source term of Poisson equation
+        electron_distribution.vector()[:] = np.array([i for i in electron_density])  
+
+        iterate  = iterate + 1
+        
 
     end = time.time()
     print("elpsed_time:{}".format(end - start) + "[sec]")
