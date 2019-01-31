@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import interp2d
+from matplotlib.colors import LogNorm
 
 class Constant(object):
     def __init__(self):
@@ -18,6 +19,7 @@ class Constant(object):
         self.KB = 1.38064852* 10**-23
 
 def electrostaticPotential(device, potential, iterate):
+    print("plot electron static distribution!!!")
     X = np.linspace(device.xin, device.xfi, device.nx+1)
     Y = np.linspace(device.yin, device.yfi, device.ny+1)
     X, Y = np.meshgrid(X, Y)
@@ -26,13 +28,17 @@ def electrostaticPotential(device, potential, iterate):
     ax = fig.gca(projection="3d")
     ax.plot_surface(X, Y, potential, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
     ax.view_init(10, -120)
-    plt.savefig("img/electrostatic_potential" + "_" + str(iterate) + ".png")
+    plt.savefig("img/potential/electrostatic_potential" + "_" + str(iterate) + ".png")
 
 def electronDistribution(device, electron_distribution, iterate):
-    fig = plt.figure()
+    print("plot electron density distribution")
+
     X = np.linspace(device.xin, device.xfi, device.nx+1)
     Y = np.linspace(device.yin, device.yfi, device.ny+1)
     X, Y = np.meshgrid(X, Y)
-    plt.subplot(1,1,1)
-    plt.pcolor(X, Y, electron_distribution)
-    plt.savefig("img/electron_distribution" + "_" + str(iterate) + ".png")
+    fig = plt.figure()
+    plt.pcolor(X, Y, electron_distribution, norm=LogNorm(vmin=electron_distribution.min(), vmax=electron_distribution.max()), cmap=plt.cm.coolwarm)
+    plt.colorbar()
+
+    plt.savefig("img/density/electron_distribution" + "_" + str(iterate) + ".png")
+    np.savetxt("density" + "_" + str(iterate) + ".csv", electron_distribution)

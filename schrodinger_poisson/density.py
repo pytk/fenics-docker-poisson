@@ -26,8 +26,9 @@ def electronOccupationState(eigenvalues, fermiEnergy):
     """
     nk = []
     for eigenvalue in eigenvalues:
-        result = temp1*mpmath.quad(lambda x: 1/(1 + mpmath.exp((x-fermiEnergy)/temp2)), [eigenvalue/Q, float('inf')])
+        result = temp1*mpmath.quad(lambda x: 1/(1 + mpmath.exp((x-fermiEnergy)/temp2)), [eigenvalue, 2*eigenvalue + fermiEnergy])
         nk.append(result)
+    nk = np.array(nk)
     return nk
 
 # function  to calculate the electron density
@@ -45,7 +46,8 @@ def electronDensityFunction(eigenvectors, nk, eigenvalues):
         result.append(kth_term)
 
     # sigma with each eigen value
+    result = np.array(result)
     n = np.sum(result, axis=0)
     # return number of electron in a cell (1 nm)
-    return n * 10**-27
+    return n
 

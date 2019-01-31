@@ -184,7 +184,7 @@ if __name__ == "__main__":
     }
 
     # assume initial fermi energy is 4.3 eV
-    fermi_energy = 4.3
+    fermi_energy = 3.5
 
     constant = ConstantValue()
 
@@ -214,7 +214,7 @@ if __name__ == "__main__":
         if ("poisson" in device.flag):
             plotter.electrostaticPotential(device, potential, iterate)
         
-        wavefunction, eigenvalue = schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant)
+        wavefunction, eigenvalue = schrodinger_fenics.schrodinger(rectangle_mesh, potential, device, constant, iterate)
 
         # reinitialize electron distribution
         electron_density = np.zeros((device.ny+1, device.nx+1))
@@ -230,10 +230,19 @@ if __name__ == "__main__":
         if ("density" in device.flag):
             plotter.electronDistribution(device, electron_density, iterate)
 
+        # check if electron density get convergence or not
+        density_error = []
+        electron_density = electron_density.flatten()
+        if (iterate > 0):
+            for el in range(len(electron_density)):
+                density_error.append(electron_distribution.vector()[el] - electron_density[el])
+            density_error = abs(sum(density_error)/len(density_error))
+
+            print("Electron Density Error is: " + str(density_error[0]))
+
         electron_distribution = Function(V)
         # add electron to source term of Poisson equation
-        electron_density = electron_density.flatten()
-        electron_distribution.vector()[:] = np.array([i for i in electron_density])
+        electron_distribution.vector()[:] = np.array([i for i in electron_density])  
 
         iterate  = iterate + 1
         

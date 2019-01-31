@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import math
+import constant as cons
 
 # Warning: from fenics import * will import both `sym` and
 # `q` from FEniCS. We therefore import FEniCS first and then
@@ -42,7 +43,7 @@ def makeHamiltonian(ny, dy, potential, device, cons):
             hamiltonian[i, j] = v
     return hamiltonian
 
-def schrodinger(mesh, potential, device, cons):
+def schrodinger(mesh, potential, device, cons, iterate):
     """
     return normalized hamiltonian with each eigen value (n = 1, 2, 3) and wave function in rectangler mesh
 
@@ -52,7 +53,7 @@ def schrodinger(mesh, potential, device, cons):
         - device : Original Class of device structure
         - cons : Original Class of constant value
     """
-    subbands = 5
+    subbands = 3
     # reshape potential from 2d rectangle shape to 1d array
     #potential = np.array([i for i in potential])
     #potential = np.reshape(potential, (device.ny+1,device.nx+1))
@@ -90,7 +91,7 @@ def schrodinger(mesh, potential, device, cons):
 
             # eigen vector is already normalized!!!
             wavefunction[:, index] = -1*temp
-            eigenvalue[subband, index] = w[subband]
+            eigenvalue[subband, index] = w[subband] / cons.Q
 
         # reshape 2d wavefunction array to 1d array
         if("schrodinger" in device.flag):
@@ -103,7 +104,7 @@ def schrodinger(mesh, potential, device, cons):
             ax = fig.gca(projection="3d")
             ax.plot_surface(X, Y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
             ax.view_init(10, -120)
-            plt.savefig("img/wavefunction_" + str(subband) + ".png")
+            plt.savefig("img/wave/wavefunction_" + str(iterate) + "-" + str(subband) + ".png")
 
     print("Schrodinger Equation got finished!")
 
