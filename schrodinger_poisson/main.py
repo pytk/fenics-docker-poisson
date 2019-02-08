@@ -31,6 +31,7 @@ class Device(object):
         self.doner = structure["doner"]
         self.nplus = structure["nplus"]
         self.flag = flag
+        self.subband_number = structure["subband_number"]
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.yin, self.yfi)
@@ -144,7 +145,8 @@ if __name__ == "__main__":
         "src": 40 * nm,
         "drain": 260 * nm,
         "doner": 1.0 * 10**21,
-        "nplus": [50 * nm, 250 * nm] 
+        "nplus": [50 * nm, 250 * nm],
+        "subband_number": 4
     }
 
     # doner density about n++ layer
@@ -219,11 +221,14 @@ if __name__ == "__main__":
         # reinitialize electron distribution
         electron_density = np.zeros((device.ny+1, device.nx+1))
 
+        wavefunction_dict = {}
         for index in range(device.nx + 1):
             # calculate occupation state of each subband
             # return a numpy array of occuaption state in each subband
             nk = density.electronOccupationState(eigenvalue[:, index], fermi_energy)
-            n = density.electronDensityFunction(wavefunction[:, index], nk, eigenvalue[:, index])
+            for subband in range(device.subband_number):
+                wavefunction_dict[str(subband)] = wavefunction[subband][:, index]
+            n = density.electronDensityFunction(wavefunction_dict, nk, eigenvalue[:, index])
             electron_density[:, index] = n
 
         # plot electron distribution
