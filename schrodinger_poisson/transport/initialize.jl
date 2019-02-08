@@ -1,4 +1,4 @@
-function initializeParticle(electron_density, device, scattering_rate):
+function initializeParticle(electron_density, device, scattering_rate, eigen_values):
     #=
     Return particle information like wave number (kx, ky)
     position, subband number, etc ... for each particle.
@@ -7,6 +7,8 @@ function initializeParticle(electron_density, device, scattering_rate):
 
     Args:
         - electron_density[x, z] electron density distribution from self-consistent schrodinger-poisson loop
+
+        - eigen_values [subband, nx] eigen value from schrodinger equation for each slice along x-axsis
 
         - p[particle number][i]
             - i = 1: subband number
@@ -19,7 +21,7 @@ function initializeParticle(electron_density, device, scattering_rate):
     Note: we are only taking consider 2d particle gas not 3d particle,
           hence, we don't need to consider kz because the energy along the z-axis is discretized
     =#
-    
+
     # constant value
 
     # Boltzman constant (JK^-1)
@@ -39,6 +41,9 @@ function initializeParticle(electron_density, device, scattering_rate):
     # particle array 
     particle = Any[]
 
+    # eigen values
+    eigen_value = eigen_values[1]
+
     # dx , dz
     dx = device["dx"]
     dz = device["dz"]
@@ -53,17 +58,20 @@ function initializeParticle(electron_density, device, scattering_rate):
                 Ek = -kb*T*rand()
 
                 # wave bector (E-k) without non-parabolicity
-                k = sqrt(2m*Ek)/ħ
+                k = √(2m*Ek)/ħ
 
                 ϕ = 2π*rand()
 
                 cosθ = 1 - 2rand()
-                sinθ = sqrt(1 - cosθ^2)
+                sinθ = √(1 - cosθ^2)
                 cosϕ = cos(ϕ)
                 sinϕ = sin(ϕ)
 
+                # kz from eigen value by schrodinger equation
+                kz = √(2m*eigen_value[i])/ħ
+
                 # build the new particle information as julia dictionaly
-                dict = Dict("subband" => 1, "kx" => k*sinθ*cosϕ, "ky" => k*sinθ*sinϕ, "ts" => "TODO", "x" => dx*(rand()+i-1.5), "z" => dz*(rand()+j-1.5))
+                dict = Dict("subband" => 1, "kx" => k*sinθ*cosϕ, "ky" => k*sinθ*sinϕ, "kz" => kz, "ts" => "TODO", "x" => dx*(rand()+i-1.5), "z" => dz*(rand()+j-1.5))
 
                 # append No.n particle dict into particle array
                 push!(particle, dict, nothing)
