@@ -58,18 +58,21 @@ function getScatteringRate(wavefunction, eigen_values, device)
     end
     
     # scattering rate array
-    scattering_rate_first = Array{Float64, 2}[undef, nx, ne]
-    scattering_rate_second = Array{Float64, 2}[undef, nx, ne]
-    scattering_rate_third = Array{Float64, 2}[undef, nx, ne]
+    scattering_rate = Array{Float64, 4}[0.0, nx, subband_number, ne, scattering_number]
 
     # calculate Gnm and φ which is required to calculate scattering rate for each kind of scattering that's why I compute these constant for each of first step of calculating scattering rate for each step
+
+    # we have to make dictionary for each loop and get integrated finally
+    each_slice = Dict{Int32, Dict{Int32, Dict{Int32, Array{Float64, scattering_number}}}}()
     for x in 1:nx+1
-        # calculate Gn,m which is an integration of wave function along z axsis
-        Gnm = Dict{Int32, Array{Float64, 1}}
-        φ = Array{Float64, 1}
+        each_subband = Dict{Int32, Dict{Int32, Array{Float64, scattering_number}}}
         for subband in 1:subband_number
+
+            # this process is independent but other scattering rate is based on calculated value in this area
+            #######==========================================#########
+            Gnm = Dict{Int32, Array{Float64, 1}}
+            φ = Array{Float64, 1}
             qzmax = eigen_values[subband+1, x] - eigen_values[subband, x]
-            
             sum = 0
             for qz in -qzmax:de:qzmax
                 for z in 1:nz+1
@@ -88,55 +91,61 @@ function getScatteringRate(wavefunction, eigen_values, device)
             # φ depends on only energy itself so that we don't add existing value
                 push!(φ, Gnm)
             end
+            #=========================================#
 
             # compute each type of scattering rate
-            acoustics = []
-            non_polor_absorbs = []
-            non_polor_emitions = []
-            scattring_rate_temp = 0
-            for e in 0:ne
-                
+            each_energy = Dict{Int32, Array{Float64, scattering_number}}
+
+            # Array to normalize scattering rate by calculatin sum of final number of scat
+            final_number_of_scat = Array{Float64, 1}
+
+            for energy in 1:energies
+                # Inititalize scattering rate
+                # Array to store each type of scattering rate
+                each_scat = Array{Float64, scattering_number}
+                scattring_rate_temp = 0
+
+                # TODO: each kind of scattering rate should be calculated in each component as separete file
                 # acoustic scattering 
                 Nn = density(e)
                 acoustic = 2*π*(D^2)*kb*T/(ħ*cL)*φ*Nn
-                push!(acoustics, acoustic)
-
                 scattring_rate_temp += acoustic
+                push!(each_scat, scattring_rate_temp)
 
-                # non-polor optical phonon absorb
+                # Non-polor optical phonon absorb
                 Nn = density(e+ħω)
                 non_polor_absorb = 0
-                push!(non_polor_absorbs, non_polor_absorb)
-
                 scattring_rate_temp += non_polor_absorb
+                push!(each_scat, scattring_rate_temp)
 
-                # non-polor optical phonon emition
+                # Non-polor optical phonon emition
                 Nn =density(e-ħω)
                 non_polor_emition = 0
-                push!(non_polor_emitions, non_polor_emition)
-
                 scattring_rate_temp += non_polor_emition
+                push!(each_scat, scattring_rate_temp)
 
-                
+                # this is speacial only for final number of scat
+                push!(final_number_of_scat, scattring_rate_temp)
 
-            # now that we have only acoustic inttra valley phonon scattering
-            # you have to set scattering that you set finally!!!!!
-            max_value = maximum(acoustics)
+                #===========================================#
 
-            # normalize scattering rate
-            temp = map(scattring_rate_temp) do t t/max_value end
-
-            # add normalized scattering rate for each slic 
-            if subband == 1
-                push!(scattering_rate_first, temp)
-            else if subband == 2
-                push!(scattering_rate_second, temp)
-            else
-                push!(scattering_rate_third, temp)
+                each_energy[energy] = each_scat
             end
+
+            # normalize scattering rate for each energy and each type of scat
+            max_scattering_rate = maximum(final_number_of_scat)
+            for energy in 1:energies
+                temp = map(each_energy[energy]) do el el/max_scattering_rate end
+                each_energy[energy] = temp
+            #=================================================================#
+
+            each_subband[subband] = each_energy
         end
+
+        each_slice[x] = each_subband
     end
 
-    return scattering_rate_first, scattering_rate_second, scattering_rate_third
-end             
-                    
+    return each_slice
+end
+
+

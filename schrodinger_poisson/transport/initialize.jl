@@ -17,6 +17,7 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
             - i = 4: ts (free flight time)
             - i = 5: x (x position)
             - i = 6: z (z position)
+        - scattering_rate
 
     Note: we are only taking consider 2d particle gas not 3d particle,
           hence, we don't need to consider kz because the energy along the z-axis is discretized
@@ -39,7 +40,7 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
     particle_number = 0
 
     # particle array 
-    particle = Any[]
+    particle = Dict{Int32, Dict{String, Float64}}()
 
     # eigen values
     eigen_value = eigen_values[1]
@@ -48,6 +49,7 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
     dx = device["dx"]
     dz = device["dz"]
 
+    particle_count = 0
     for i in 1:device["nx"]
         for j in 1:device["nz"]
             number_of_particle = electron_density[i, j]
@@ -73,8 +75,9 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
                 # build the new particle information as julia dictionaly
                 dict = Dict("subband" => 1, "kx" => k*sinθ*cosϕ, "ky" => k*sinθ*sinϕ, "kz" => kz, "ts" => "TODO", "x" => dx*(rand()+i-1.5), "z" => dz*(rand()+j-1.5))
 
-                # append No.n particle dict into particle array
-                push!(particle, dict, nothing)
+                # insert No.n particle dict into particle array
+                particle_count += 1
+                particle[particle_count] = dict
             end
         end
     end
