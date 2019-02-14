@@ -39,10 +39,13 @@ def electronDensityFunction(eigenvectors, nk, eigenvalues):
     args: 
         - eigenvectors: 1d wavefunction array of each slice
         - nk: electron occupation state
+
+    Note: we can get electron density distribution, hence you can figure out
+    the final percentage of doner n[x] = Nd[x] 
     """
     result = []
     for i in range(len(eigenvalues)):
-        kth_term = [(wavefunction * wavefunction * nk[i]) for wavefunction in eigenvectors]
+        kth_term = [(wavefunction * wavefunction * nk[i]) for wavefunction in eigenvectors[str(i)]]
         result.append(kth_term)
 
     # sigma with each eigen value

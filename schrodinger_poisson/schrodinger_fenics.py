@@ -52,8 +52,11 @@ def schrodinger(mesh, potential, device, cons, iterate):
         - potential : 2d electro static potential calculated in Poisson Equation 
         - device : Original Class of device structure
         - cons : Original Class of constant value
+
+    Return
+        - wavefunction_dict: Dict{"subband_number": [nx, nz], "subband_number": [nx, nz], ......}
     """
-    subbands = 3
+    subbands = device.subband_number
     # reshape potential from 2d rectangle shape to 1d array
     #potential = np.array([i for i in potential])
     #potential = np.reshape(potential, (device.ny+1,device.nx+1))
@@ -80,6 +83,8 @@ def schrodinger(mesh, potential, device, cons, iterate):
     wavefunction = np.zeros((device.ny+1, device.nx+1))
     eigenvalue = np.zeros((subbands, device.nx+1))
 
+    wavefunction_dict = {}
+
     for subband in range(0, subbands):
         # calculate eigen vector and eigen value for each slice of rectangle mesh
         for index in range(device.nx + 1):
@@ -92,6 +97,8 @@ def schrodinger(mesh, potential, device, cons, iterate):
             # eigen vector is already normalized!!!
             wavefunction[:, index] = -1*temp
             eigenvalue[subband, index] = w[subband] / cons.Q
+
+        wavefunction_dict[subband] = wavefunction
 
         # reshape 2d wavefunction array to 1d array
         if("schrodinger" in device.flag):
@@ -108,4 +115,4 @@ def schrodinger(mesh, potential, device, cons, iterate):
 
     print("Schrodinger Equation got finished!")
 
-    return wavefunction, eigenvalue
+    return wavefunction_dict, eigenvalue
