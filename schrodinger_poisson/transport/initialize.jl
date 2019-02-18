@@ -1,4 +1,4 @@
-function initializeParticle(electron_density, device, scattering_rate, eigen_values):
+function initializeParticle(electron_density, device, Gm, eigen_values)
     #=
     Return particle information like wave number (kx, ky)
     position, subband number, etc ... for each particle.
@@ -11,7 +11,7 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
         - eigen_values [subband, nx] eigen value from schrodinger equation for each slice along x-axsis
 
         - p[particle number][i]
-            - i = 1: subband number
+            - i = 1: subband 1 ~ 3 but 8 means 3d particle and 9 means the particle in ohmic or schottky layer so it would be deleted
             - i = 2: kx
             - i = 3: ky
             - i = 4: ts (free flight time)
@@ -49,10 +49,19 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
     dx = device["dx"]
     dz = device["dz"]
 
+    nx = device["nx"]
+    nz = device["nz"]
+
+    gate_ini = device["gate_ini"]
+    gate_fin = device["gate_fin"]
+
+    number_of_carrier_per_superparticle = device["carrier_per_superparticle"]
+
+
     particle_count = 0
-    for i in 1:device["nx"]
-        for j in 1:device["nz"]
-            number_of_particle = electron_density[i, j]
+    for i in 1:nx
+        for j in 1:nz
+            number_of_particle = electron_density[i][j]*dx*dz/number_of_carrier_per_superparticle
             for np in 1:number_of_particle
                 particle_number += 1
 
@@ -70,10 +79,22 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
                 sinϕ = sin(ϕ)
 
                 # kz from eigen value by schrodinger equation
-                kz = √(2m*eigen_value[i])/ħ
+                kx = k*sinθ*cosϕ
+                ky = k*sinθ*sinϕ
+                z = dz*(rand()+j-1.5)
+                ts = -log(rand())/Gm[trunc(Int, x/dx)]
+                x = dx*(rand()+i-1.5)
+
+                # When it comes to z-axis in wave space, it depends on the position of particle. if a particle is within under the gate, the particle would be 2d electron
+                if gate_ini <= x && x <= gate_fin
+                    kz = √(2m*eigen_value[i])/ħ
+                    subband = 1
+                else
+                    kz = k*cosθ
+                    subband = 8
 
                 # build the new particle information as julia dictionaly
-                dict = Dict("subband" => 1, "kx" => k*sinθ*cosϕ, "ky" => k*sinθ*sinϕ, "kz" => kz, "ts" => "TODO", "x" => dx*(rand()+i-1.5), "z" => dz*(rand()+j-1.5))
+                dict = Dict("subband" => subband, "kx" => kx, "ky" => ky, "kz" => kz, "ts" => ts, "x" => x, "z" => z)
 
                 # insert No.n particle dict into particle array
                 particle_count += 1
@@ -82,10 +103,7 @@ function initializeParticle(electron_density, device, scattering_rate, eigen_val
         end
     end
 
-    @printf "Initial number of electron super-particles is %d" particle_number
+    @printf "Initial number of electron super-particles is %d" particle_count
     return particle
 
 end
-                
-            
-

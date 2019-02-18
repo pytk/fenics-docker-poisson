@@ -56,16 +56,15 @@ function getScatteringRate(wavefunction, eigen_values, device)
         end
         return Nn
     end
-    
-    # scattering rate array
-    scattering_rate = Array{Float64, 4}[0.0, nx, subband_number, ne, scattering_number]
 
     # calculate Gnm and φ which is required to calculate scattering rate for each kind of scattering that's why I compute these constant for each of first step of calculating scattering rate for each step
 
     # we have to make dictionary for each loop and get integrated finally
     each_slice = Dict{Int32, Dict{Int32, Dict{Int32, Array{Float64, scattering_number}}}}()
+    each_slice_Gm = Dict{Int32, Dict{Int32, Float64}}
     for x in 1:nx+1
         each_subband = Dict{Int32, Dict{Int32, Array{Float64, scattering_number}}}
+        each_subband_Gm = Dict{Int32, Float64}
         for subband in 1:subband_number
 
             # this process is independent but other scattering rate is based on calculated value in this area
@@ -134,18 +133,24 @@ function getScatteringRate(wavefunction, eigen_values, device)
 
             # normalize scattering rate for each energy and each type of scat
             max_scattering_rate = maximum(final_number_of_scat)
+            # this is for initialize each particle info in initialize.jl
+            
+            each_subband_Gm[subband] = max_scattering_rate
+            
             for energy in 1:energies
                 temp = map(each_energy[energy]) do el el/max_scattering_rate end
                 each_energy[energy] = temp
+            end
             #=================================================================#
 
             each_subband[subband] = each_energy
         end
 
         each_slice[x] = each_subband
+        each_slice_Gm[x] = each_subband_Gm
     end
 
-    return each_slice
+    return each_slice, each_slice_Gm
 end
 
 

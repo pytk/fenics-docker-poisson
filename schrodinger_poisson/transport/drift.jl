@@ -1,3 +1,5 @@
+include("check_if_particle_out.jl")
+
 function drift(τ, particle, device, electron_field)
     #=
     Note: This doesn't include non-prabolicityt
@@ -25,8 +27,15 @@ function drift(τ, particle, device, electron_field)
     nx = device["nx"]
     nz = device["nz"]
 
-    i = trunc(Int, particle["x"]/dx)+1
-    j = trunc(Int, particle["z"]/dz)+1
+    kx = particle["kx"]
+    ky = particle["ky"]
+    kz = particle["kz"]
+
+    x = particle["x"]
+    z = particle["z"]
+
+    i = trunc(Int, x/dx)+1
+    j = trunc(Int, z/dz)+1
 
     if i <= 1 i=1 end
     if j <= 1 j=1 end
@@ -36,18 +45,14 @@ function drift(τ, particle, device, electron_field)
     # electron drift process
     dkx =  e*F[j]*τ/ħ
 
-    kx = particle["kx"]
-    ky = particle["ky"]
-    kz = particle["kz"]
-
-    x = particle["x"]
-    z = particle["z"]
-
     # calculate group velocity along with x-axis. parhaps, It must be considered z-axis
     particle["x"] = x + ħ/m*τ*(kx+0.5*dkx)
     particle["z"] = z + ħ*kz/m*τ
 
     particle["kx"] = kx+dkx
+
+    # check if particle goes out from device range
+    particle = checkIfParticleOut(particle, device)
 
     return particle
 end

@@ -1,4 +1,4 @@
-function checkIfParticle(particle, device)
+function checkIfParticleOut(particle, device)
     #=
     Args:
         - particle: Dict{String, Float64}
@@ -25,6 +25,8 @@ function checkIfParticle(particle, device)
 
     kx = particle["kx"]
     kz = particle["kz"]
+
+    subband = particle["subband"]
 
     src = device["src"]
     drain = device["drain"]
