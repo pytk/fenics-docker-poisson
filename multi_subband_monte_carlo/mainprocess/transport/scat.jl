@@ -54,11 +54,11 @@ function scat(particle, device, scattering_rate)
         if final_energy <= 0.0 return end
     
     # absourb
-    else if r <= scattering_rate[x][subband][ie][2]
+    elseif r <= scattering_rate[x][subband][ie][2]
         final_energy = superparticle_energy + phonon_energy
     
     # emission
-    else if r <= scattering_rate[x][subband][ie][3]
+    elseif r <= scattering_rate[x][subband][ie][3]
         final_energy = superparticle_energy - phonon_energy
 
     end

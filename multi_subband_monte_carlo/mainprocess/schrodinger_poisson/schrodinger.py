@@ -1,10 +1,6 @@
 from __future__ import print_function
 from scipy.integrate import simps
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
 import math
 
 # Warning: from fenics import * will import both `sym` and
@@ -42,7 +38,7 @@ def makeHamiltonian(ny, dy, potential, device, cons):
             hamiltonian[i, j] = v
     return hamiltonian
 
-def schrodinger(mesh, potential, device, cons, iterate):
+def schrodinger(mesh, potential, device, cons):
     """
     return normalized hamiltonian with each eigen value (n = 1, 2, 3) and wave function in rectangler mesh
 
@@ -55,7 +51,7 @@ def schrodinger(mesh, potential, device, cons, iterate):
     Return
         - wavefunction_dict: Dict{"subband_number": [nx, nz], "subband_number": [nx, nz], ......}
     """
-    subbands = device.subband_number
+    subbands = device.subband_number+1
     # reshape potential from 2d rectangle shape to 1d array
     #potential = np.array([i for i in potential])
     #potential = np.reshape(potential, (device.ny+1,device.nx+1))
@@ -74,15 +70,16 @@ def schrodinger(mesh, potential, device, cons, iterate):
     dof_y = dof_coordinates[:, 1]
 
     # dimention of rectangle mesh
-    N = device.ny 
-    L = device.yfi
+    N = device.nz 
+    L = device.zfi
     x, dx = np.linspace(0, L, N), L / N
 
     y, dy = np.linspace(0, L, N+1), L / N
-    wavefunction = np.zeros((device.ny+1, device.nx+1))
+    wavefunction = np.zeros((device.nz+1, device.nx+1))
     eigenvalue = np.zeros((subbands, device.nx+1))
 
     wavefunction_dict = {}
+    eigenvalue_dict = {}
 
     for subband in range(0, subbands):
         # calculate eigen vector and eigen value for each slice of rectangle mesh
@@ -97,8 +94,10 @@ def schrodinger(mesh, potential, device, cons, iterate):
             wavefunction[:, index] = -1*temp
             eigenvalue[subband, index] = w[subband] / cons.Q
 
-        wavefunction_dict[subband] = wavefunction
+        wavefunction_dict[subband+1] = wavefunction
+        eigenvalue_dict[subband+1] = eigenvalue[subband][:]
 
+        """
         # reshape 2d wavefunction array to 1d array
         if("schrodinger" in device.flag):
             X = np.linspace(device.xin, device.xfi, device.nx+1)
@@ -111,7 +110,8 @@ def schrodinger(mesh, potential, device, cons, iterate):
             ax.plot_surface(X, Y, wavefunction, linewidth=0.2, antialiased=True, cmap=plt.cm.coolwarm)
             ax.view_init(10, -120)
             plt.savefig("img/wave/wavefunction_" + str(iterate) + "-" + str(subband) + ".png")
+        """
 
     print("Schrodinger Equation got finished!")
 
-    return wavefunction_dict, eigenvalue
+    return wavefunction_dict,  eigenvalue_dict

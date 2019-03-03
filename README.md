@@ -1,5 +1,14 @@
 # fenics-docker-poisson
 
+initialize configuration of Python-Julia integration
+```julia
+using Pkg
+using PyCall
+Pkg.add("PyCall")
+ENV["PYTHON"]="/usr/bin/python3"
+Pkg.build("PyCall")
+```
+
  This repository's goal is computing partical differencies equation especially poisson equation. It can work in Docker for Mac like below:
 
  ```bash

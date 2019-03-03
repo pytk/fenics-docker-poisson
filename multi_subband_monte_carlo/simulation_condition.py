@@ -21,6 +21,8 @@ class Device(object):
         self.subband_number = structure["subband_number"]
         self.carrier_per_superparticle = structure["carrier_per_superparticle"]
         self.scat_list = structure["scat_list"]
+        self.time_step = structure["time_step"]
+        self.final_time = structure["final_time"]
 
     def IntervalMeshCreate(self):
         mesh = IntervalMesh(self.ny, self.zin, self.zfi)

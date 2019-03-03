@@ -1,20 +1,25 @@
 from __future__ import print_function
 import numpy as np
 import scipy
-
+from multi_subband_monte_carlo.mainprocess.schrodinger_poisson import bias
 
 # Warning: from fenics import * will import both `sym` and
 # `q` from FEniCS. We therefore import FEniCS first and then
 # overwrite these objects.
 from dolfin import *
 
-from multi_subband_monte_carlo.mainprocess.schrodinger_poisson import bias
+def poissonSolver(mesh, device, cons, electron_distribution):
 
-def poissonSolverTest(mesh, dopant, device, cons, electron):
+    # convert from Julia array to numpy array which can apply to dolphin function
+    electron_distribution = np.array(electron_distribution).flatten()
+    V = FunctionSpace(mesh, 'CG', 1)
+    electron = Function(V)
+    # add electron to source term of Poisson equation
+    electron.vector()[:] = np.array([i for i in electron_distribution])
 
     class Channel(SubDomain):
         def inside(self, x, on_boundary):
-            return between(x[1], (0, device.yfi))
+            return between(x[1], (0, device.zfi))
 
     class Gate(SubDomain):
         def inside(self, x, on_boundary):
@@ -30,7 +35,7 @@ def poissonSolverTest(mesh, dopant, device, cons, electron):
 
     class Bottom(SubDomain):
         def inside(self, x, on_boundary):
-            return near(x[1], device.yfi) and on_boundary
+            return near(x[1], device.zfi) and on_boundary
 
     class Nuemann(SubDomain):
         def inside(self, x, on_boundary):
@@ -105,9 +110,9 @@ def poissonSolverTest(mesh, dopant, device, cons, electron):
     # CellFunction to be used as a source term
     #f = Function(V)
     #f.vector()[:] = np.array([i for i in dopant])
-    ini = device.nplus[0]
-    fin = device.nplus[1]
-    f = Expression('ini < x[0] && x[0] < fin ? 100 : 1000', degree=1, ini=ini, fin=fin)
+    #ini = device.nplus[0]
+    #fin = device.nplus[1]
+    #f = Expression('ini < x[0] && x[0] < fin ? 100 : 1000', degree=1, ini=ini, fin=fin)
     doner = Function(V)
     doner.vector()[:] = np.array([nd for nd in doner.vector()])
 
@@ -118,7 +123,7 @@ def poissonSolverTest(mesh, dopant, device, cons, electron):
     ge_eps = 16
 
     F = inner(ge_eps*grad(u), grad(v))*dx(1) -zero*v*ds(5)
-    L = cons.Q/cons.EPS*electron*v*dx(1)
+    L = cons.Q/cons.EPS*(doner-electron)*v*dx(1)
     # - ((eps * (u_gate - u)/ 10**-9))*v*ds(1)
 
     # Compute solution
@@ -137,6 +142,8 @@ def poissonSolverTest(mesh, dopant, device, cons, electron):
 
     array = device.ChangeDolfinVectorToNumpy(dof_x, dof_y, u_array)
 
+    # consider about schottky junction
     array[0, :] += device.material["electron_affinity"] - device.material["oxyde_affinity"]
     
+    # return electro static potential (numpy array)
     return array

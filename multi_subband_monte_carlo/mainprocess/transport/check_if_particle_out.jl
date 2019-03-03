@@ -41,7 +41,7 @@ function checkIfParticleOut(particle, device)
     if x < 0
         x = -x
         kx = -kx
-    else if x > nx+1
+    elseif x > nx+1
         x = nx - (x - nx)
         kx = -kx
     end
@@ -49,13 +49,13 @@ function checkIfParticleOut(particle, device)
     if j < 0
         if x < src || x > doner
             subband = 9
-        else if x > gate_ini && x < gate_fin
+        elseif x > gate_ini && x < gate_fin
             subband = 9
         else
             z = -z
             kz = -kz
         end
-    else if z > nz
+    elseif z > nz
         z = nz - (z-nz)
         kz = -kz
     end

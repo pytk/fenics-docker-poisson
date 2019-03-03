@@ -21,30 +21,42 @@ def multiSubBand(electron_potential, wave_functions, eigen_values, electron_dens
 
     start = time.time()
 
+    time_step = device.time_step
+    final_time = device.final_time
+    current_time = 0.0
+
     # convert from python object to python dictionary to calculate in julia
-    device = device.__dict__
+    device_dictionary = device.__dict__
 
-    particles, scattering_rate, Gm = Main.initialize(device, wave_functions, eigen_values, electron_density, constant)
+    particles, scattering_rate, Gm = Main.initialize(device_dictionary, wave_functions, eigen_values, electron_density, constant)
 
-    Main.include("./mainprocess/transport/main.jl")
+    Main.include("./mainprocess/transport/ensemble_monte_carlo.jl")
     Main.include("./mainprocess/transport/scattering_rate.jl")
 
     print("start transport loop for each particle")
 
     # loop for all time step
-    while(time < max_time):
-
+    while(current_time < final_time):
+        print("current time is: ", current_time)
+        print("final time is: ", final_time)
         # ensemble monte carlo including drift and scat, finally it return electron density charge
-        electron_density, each_subband_density, particles = Main.ensembleMonteCarlo(particles, device, Gm, electron_density, scattering_rate)
+        #electron_density, each_subband_density, particles = Main.ensembleMonteCarlo(particles, device, Gm, electron_density, scattering_rate, current_time)
 
+        print("poisson equation for main loop")
         # poisson equation
-        potential = poisson_bcs.poissonSolverTest(mesh, device, constant, electron_density)
+        potential = poisson.poissonSolver(mesh, device, constant, electron_density)
 
+        print("Schrodinger equation for main loop")
         # schrodinger equation  
-        wavefunction, eigen_values = schrodinger_fenics.schrodinger(mesh, potential, device)
+        wavefunction, eigen_values = schrodinger.schrodinger(mesh, potential, device, constant)
 
+        print("Caluculation for scattering rate in main loop")
         # calculate scattering rate based on updated wave function
-        scattering_rate, Gm = Main.getScatteringRate(wavefunction, eigen_values, device)
+        scattering_rate, Gm = Main.getScatteringRate(wavefunction, eigen_values, device_dictionary, constant)
+
+        if(current_time + time_step >= final_time):
+            time_step = final_time - current_time
+        current_time = current_time + time_step
 
     elapsed_time = time.time() - start
     print("Elapsed Time(Python): %.2f [s]" % elapsed_time)

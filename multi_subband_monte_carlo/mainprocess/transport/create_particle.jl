@@ -81,6 +81,7 @@ function createParticle(device, Gm, eigen_values, x_position)
     else
         kz = k*cosθ
         subband = 8
+    end
 
     particle = Dict("subband" => subband, "kx" => kx, "ky" => ky, "kz" => kz, "ts" => ts, "x" => x, "z" => z)
 

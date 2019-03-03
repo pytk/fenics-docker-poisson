@@ -1,6 +1,9 @@
-include("create_particle.jl")
+include("./create_particle.jl")
+include("./drift.jl")
+include("./scat.jl")
+include("./electron_charge.jl")
 
-function ensembleMonteCarlo(particles, device, Gm, density, doner)
+function ensembleMonteCarlo(particles, device, Gm, density, scattering_rate, current_time)
     #=
     Args:
         - particle: Dict{Int32, Dict{String, Float64}}
@@ -41,21 +44,25 @@ function ensembleMonteCarlo(particles, device, Gm, density, doner)
     nx = device["nx"]
     nz = device["nz"]
 
-    start_time = 0.0
-    time_step =  start_time + device["time_step"]
+    # time means tdt in Archimedes
+    time = current_time + device["time_step"]
 
+    # initial particle number for accessing Julia dictionaly
     particle_number = 1
-    time = start_time
-    scattering_time = particles[particle_number]["ts"]
 
-    temp_particles = particles
+    println("loop for each particle get started!!!!!!")
 
     while true
-        while scattering_time <= time_step
-            τ = scattering_time - time
+        # copy of all particle information
+        println("current particle number is ", particle_number)
+        temp_particle = particles[particle_number]
+        temp_time = current_time
+        while temp_particle["ts"] <= time
+            println(temp_particle["ts"])
+            τ = temp_particle["ts"] - temp_time
 
             # drift process from the point to other point that particle can move during the free flight time and update only particle position
-            temp_particle = drift(τ, temp_particles[particle_number])
+            temp_particle = drift(τ, temp_particle)
 
             # just take the x position and z position after drift process
             i = trunc(Int, temp_particle["x"]/dx)+1
@@ -67,23 +74,24 @@ function ensembleMonteCarlo(particles, device, Gm, density, doner)
             if j >= nz j=nz end
 
             # scat process where a scat will get energy of particle changed based on the scattering rate on the particle's position and update only particle energy
-            temp_particle = scat(temp_particle)
+            temp_particle = scat(temp_particle, device, scattering_rate)
+            temp_time = temp_particle["ts"]
 
             # set next happen scat time from random value and subband the particle belong to
-            scattering_time = time - log(rand())/Gm[i][temp_particle["subband"]]
+            temp_particle["ts"] = temp_time - log(rand())/Gm[i][temp_particle["subband"]]
 
             # if the time scat process occuerd later over time step of simulation, it must be forced to move on to next particle process and next time step
         end
 
-        τ = scattering_time - time
+        τ = time - temp_time
 
         # TODO: function to calculate drift process which update particle information
-        temp_particle = drift(τ, temp_particle[particle_number])
+        temp_particle = drift(τ, temp_particle)
 
         if temp_particle["subband"] != 9
             particles[particle_number] = temp_particle
             particle_number += 1
-        else if temp_particle["subband"] == 9
+        elseif temp_particle["subband"] == 9
             x = particle["x"]
             particles[particle_number] = particles[end]
             deleteat!(particle, length(particle))
@@ -100,14 +108,6 @@ function ensembleMonteCarlo(particles, device, Gm, density, doner)
             break
         end
     end
-    return particles
+    electron_density, each_subband_density = electronCharge(particles, device)
+    return electron_density, each_subband_density, particles
 end
-
-
-
-
-
-
-
-
-    

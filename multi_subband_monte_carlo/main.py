@@ -31,7 +31,9 @@ def main():
         "drain": 260 * nm,
         "subband_number": 3,
         "carrier_per_superparticle": 100000,
-        "scat_list": ["acoustic", "non-polor-optics"]
+        "scat_list": ["acoustic", "non-polor-optics"],
+        "time_step": 0.001 * 10**-12,
+        "final_time": 5.0 * 10**-12
     }
 
     # doner density about n++ layer

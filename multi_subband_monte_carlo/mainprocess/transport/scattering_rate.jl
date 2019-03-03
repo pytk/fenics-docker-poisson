@@ -15,13 +15,17 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
         you can access specific value like scattering_rate[energy]['scat_name']['subband_number']
     =#
     nx = device["nx"]
+    nz = device["nz"]
     subband_number = device["subband_number"]
     # energy step to calculate scattering rate from 0.0 eV to 1.0 eV per 0.001 eV
     de = 0.001
     ne = 1000
 
+    # max energies
+    energies = 1.00
+
     # Boltzman constant (JK^-1)
-    kb = 1.38064852*10^-23
+    kb = 8.6173303*10^-5
 
     # device temperture
     T = constant["T"]
@@ -30,7 +34,7 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
     m = device["material"]["electron_effective_mass"]
 
     # Dirac's constant (Js)
-    ħ = 1.054571800*10^-34
+    ħ = 6.582119514*10^-16
 
     # phonon energy
     ħω = device["material"]["phonon_energy"]
@@ -48,7 +52,7 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
             - energy: eneryg step to compare with subband energy
             - eigen_values: [E2, E1] E2 means higher subband value, E1 means smaller subband energy
         =#
-        if energy >= eigen_values[subband+1][x]
+        if energy >= (eigen_values[subband+1][x] - eigen_values[subband][x])
             Nn = (2m^1.5)/(4*(π^2)*(ħ^3)) * (eigen_values[subband+1][x] -eigen_values[subband][x])
         else
             Nn = 0.0
@@ -57,11 +61,10 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
     end
 
     # calculate Gnm and φ which is required to calculate scattering rate for each kind of scattering that's why I compute these constant for each of first step of calculating scattering rate for each step
-
     # we have to make dictionary for each loop and get integrated finally
     each_slice = Dict{Int32, Dict{Int32, Dict{Float64, Array{Float64, 1}}}}()
     each_slice_Gm = Dict{Int32, Dict{Int32, Float64}}()
-    for x in 1:nx
+    for x in 1:nx+1
         each_subband = Dict{Int32, Dict{Float64, Array{Float64, 1}}}()
         each_subband_Gm = Dict{Int32, Float64}()
         each_subband_Gnm = Dict{Int32, Float64}()
@@ -74,16 +77,13 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
             qzmax = eigen_values[subband+1][x] - eigen_values[subband][x]
             temp = 0.00
             for qz in -qzmax:de:qzmax
-                for z in 1:nz
-                    temp = temp + (wavefunction[subband][x, z]*wavefunction[subband+1][x, z]) * exp(z*qz*10^-9)
+                for z in 1:nz+1
+                    temp = temp + (wavefunction[subband][z, x]*wavefunction[subband+1][z, x]) * exp(z*qz*10^-9)
                 end
                 push!(each_qz_Gnm, temp)
             end
-            #Gnm = map(Gnm) do x x^2 end
             φ = sum(map(each_qz_Gnm) do t t^-2 end)
 
-            # φ has number of subband element
-            # φ include all pairs (1, 2), (2, 3), (3, 4)
             each_subband_Gnm[subband] = φ
 
             # compute each type of scattering rate
@@ -125,15 +125,14 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
             max_scattering_rate = maximum(final_number_of_scat)
             # this is for initialize each particle info in initialize.jl         
             each_subband_Gm[subband] = max_scattering_rate
-            for energy in 1:energies
-                temp = map(each_energy[energy]) do el el/max_scattering_rate end
-                each_energy[energy] = temp
+            for energy in 0:de:energies
+                each_energy[energy] = map(each_energy[energy]) do el el/max_scattering_rate end
             end
             each_subband[subband] = each_energy
         end
         each_slice[x] = each_subband
         each_slice_Gm[x] = each_subband_Gm
     end
-    println("Calculation of Scattering rate got done!!!!!!!!!!!!!!!")
+    println("scattering rate done!!!!!!!!!!!!!!!!!!")
     return each_slice, each_slice_Gm
 end
