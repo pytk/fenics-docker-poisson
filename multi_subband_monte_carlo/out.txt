@@ -4,11 +4,3140 @@ Solving nonlinear variational problem.
   Newton iteration 0: r (abs) = 1.790e+03 (tol = 1.000e-10) r (rel) = 1.000e+00 (tol = 1.000e-09)
   Newton iteration 1: r (abs) = 3.843e-12 (tol = 1.000e-10) r (rel) = 2.147e-15 (tol = 1.000e-09)
   Newton solver finished in 1 iterations and 1 linear solver iterations.
-No Jacobian form specified for nonlinear variational problem.
-Differentiating residual form F to obtain Jacobian J = F'.
-Solving nonlinear variational problem.
-  Newton iteration 0: r (abs) = 1.790e+03 (tol = 1.000e-10) r (rel) = 1.000e+00 (tol = 1.000e-09)
-  Newton iteration 1: r (abs) = 3.882e-12 (tol = 1.000e-10) r (rel) = 2.169e-15 (tol = 1.000e-09)
-  Newton solver finished in 1 iterations and 1 linear solver iterations.
 scattering rate done!!!!!!!!!!!!!!!!!!
 Initial number of electron super-particles is 28405
+current particle number is 1
+drift process get started
+drift process done
+scat process get started
+10.787927500264194
+scattering process done
+drift process get started
+drift process done
+scat process get started
+21.511793894201176
+scattering process done
+drift process get started
+drift process done
+scat process get started
+27.419067486424048
+scattering process done
+drift process get started
+drift process done
+scat process get started
+18.22719317897047
+scattering process done
+drift process get started
+drift process done
+scat process get started
+36.23574571976071
+scattering process done
+drift process get started
+drift process done
+scat process get started
+37.75469296466859
+scattering process done
+drift process get started
+drift process done
+scat process get started
+41.533274412644424
+scattering process done
+drift process get started
+drift process done
+scat process get started
+66.67261350356878
+scattering process done
+drift process get started
+drift process done
+scat process get started
+87.15828307599126
+scattering process done
+drift process get started
+drift process done
+scat process get started
+124.8398597455497
+scattering process done
+drift process get started
+drift process done
+scat process get started
+176.6695825602637
+scattering process done
+drift process get started
+drift process done
+scat process get started
+307.9758660219977
+scattering process done
+drift process get started
+drift process done
+scat process get started
+454.05827731142324
+scattering process done
+drift process get started
+drift process done
+scat process get started
+630.2882864285236
+scattering process done
+drift process get started
+drift process done
+scat process get started
+319.95946381454445
+scattering process done
+drift process get started
+drift process done
+scat process get started
+284.23293118978563
+scattering process done
+drift process get started
+drift process done
+scat process get started
+72.02078301379858
+scattering process done
+drift process get started
+drift process done
+scat process get started
+98.9713699060906
+scattering process done
+drift process get started
+drift process done
+scat process get started
+124.16992071268045
+scattering process done
+drift process get started
+drift process done
+scat process get started
+129.75726056243286
+scattering process done
+drift process get started
+drift process done
+scat process get started
+207.4507975071405
+scattering process done
+drift process get started
+drift process done
+scat process get started
+312.5341917638314
+scattering process done
+drift process get started
+drift process done
+scat process get started
+592.2006757294105
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1012.5168738231697
+scattering process done
+drift process get started
+drift process done
+scat process get started
+578.7031984171751
+scattering process done
+drift process get started
+drift process done
+scat process get started
+569.6238487422204
+scattering process done
+drift process get started
+drift process done
+scat process get started
+142.60281580822178
+scattering process done
+drift process get started
+drift process done
+scat process get started
+126.93650287991866
+scattering process done
+drift process get started
+drift process done
+scat process get started
+125.94737984061118
+scattering process done
+drift process get started
+drift process done
+scat process get started
+155.428465200593
+scattering process done
+drift process get started
+drift process done
+scat process get started
+111.94038136609292
+scattering process done
+drift process get started
+drift process done
+scat process get started
+149.31742804858104
+scattering process done
+drift process get started
+drift process done
+scat process get started
+142.442850385751
+scattering process done
+drift process get started
+drift process done
+scat process get started
+129.31900481798817
+scattering process done
+drift process get started
+drift process done
+scat process get started
+110.54708123660458
+scattering process done
+drift process get started
+drift process done
+scat process get started
+158.61784196407552
+scattering process done
+drift process get started
+drift process done
+scat process get started
+198.56367654511703
+scattering process done
+drift process get started
+drift process done
+scat process get started
+165.62738115442482
+scattering process done
+drift process get started
+drift process done
+scat process get started
+277.2236194714318
+scattering process done
+drift process get started
+drift process done
+scat process get started
+380.1936478686716
+scattering process done
+drift process get started
+drift process done
+scat process get started
+169.56149769732093
+scattering process done
+drift process get started
+drift process done
+scat process get started
+207.99836487723462
+scattering process done
+drift process get started
+drift process done
+scat process get started
+227.08206563506437
+scattering process done
+drift process get started
+drift process done
+scat process get started
+436.1929408008053
+scattering process done
+drift process get started
+drift process done
+scat process get started
+632.7265609785234
+scattering process done
+drift process get started
+drift process done
+scat process get started
+686.9310482802529
+scattering process done
+drift process get started
+drift process done
+scat process get started
+566.3746809057391
+scattering process done
+drift process get started
+drift process done
+scat process get started
+947.763296016099
+scattering process done
+drift process get started
+drift process done
+scat process get started
+264.3630326329543
+scattering process done
+drift process get started
+drift process done
+scat process get started
+162.30143099897234
+scattering process done
+drift process get started
+drift process done
+scat process get started
+278.96837630100674
+scattering process done
+drift process get started
+drift process done
+scat process get started
+401.70453885368136
+scattering process done
+drift process get started
+drift process done
+scat process get started
+801.4100038875547
+scattering process done
+drift process get started
+drift process done
+scat process get started
+494.68016424948814
+scattering process done
+drift process get started
+drift process done
+scat process get started
+555.4695401267602
+scattering process done
+drift process get started
+drift process done
+scat process get started
+687.4839457248281
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1333.50862894947
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1875.5490791408956
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3543.7823711036913
+scattering process done
+drift process get started
+drift process done
+scat process get started
+551.3524073990777
+scattering process done
+drift process get started
+drift process done
+scat process get started
+340.9005242487559
+scattering process done
+drift process get started
+drift process done
+scat process get started
+576.8921425156584
+scattering process done
+drift process get started
+drift process done
+scat process get started
+736.1721686437296
+scattering process done
+drift process get started
+drift process done
+scat process get started
+953.0049842227646
+scattering process done
+drift process get started
+drift process done
+scat process get started
+804.9193562742764
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1124.3308963985896
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1377.3180172822922
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2615.9629156704873
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3584.017606250497
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4675.426771929895
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6831.185566808947
+scattering process done
+drift process get started
+drift process done
+scat process get started
+11885.853467964489
+scattering process done
+drift process get started
+drift process done
+scat process get started
+21427.84981497664
+scattering process done
+drift process get started
+drift process done
+scat process get started
+20117.61744832979
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7875.406668703208
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3837.9981274188603
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5177.042033506953
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4565.655409658535
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5096.259774523948
+scattering process done
+drift process get started
+drift process done
+scat process get started
+872.3251165661442
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1288.3643968599924
+scattering process done
+drift process get started
+drift process done
+scat process get started
+484.2678953508604
+scattering process done
+drift process get started
+drift process done
+scat process get started
+437.17381556871806
+scattering process done
+drift process get started
+drift process done
+scat process get started
+46.11332090910223
+scattering process done
+drift process get started
+drift process done
+scat process get started
+80.02566512390355
+scattering process done
+drift process get started
+drift process done
+scat process get started
+26.48063671392608
+scattering process done
+drift process get started
+drift process done
+scat process get started
+44.613794278355755
+scattering process done
+drift process get started
+drift process done
+scat process get started
+64.30647182399964
+scattering process done
+drift process get started
+drift process done
+scat process get started
+101.25687704985722
+scattering process done
+drift process get started
+drift process done
+scat process get started
+115.8781462125997
+scattering process done
+drift process get started
+drift process done
+scat process get started
+84.44477583031515
+scattering process done
+drift process get started
+drift process done
+scat process get started
+90.92115462168456
+scattering process done
+drift process get started
+drift process done
+scat process get started
+125.3379182765421
+scattering process done
+drift process get started
+drift process done
+scat process get started
+165.23059190931596
+scattering process done
+drift process get started
+drift process done
+scat process get started
+204.86275425834194
+scattering process done
+drift process get started
+drift process done
+scat process get started
+219.0795871920553
+scattering process done
+drift process get started
+drift process done
+scat process get started
+40.17604809799963
+scattering process done
+drift process get started
+drift process done
+scat process get started
+49.02063946069716
+scattering process done
+drift process get started
+drift process done
+scat process get started
+39.43042667276046
+scattering process done
+drift process get started
+drift process done
+scat process get started
+45.77715034051374
+scattering process done
+drift process get started
+drift process done
+scat process get started
+90.28665800896441
+scattering process done
+drift process get started
+drift process done
+scat process get started
+177.11015535978507
+scattering process done
+drift process get started
+drift process done
+scat process get started
+137.85428227102977
+scattering process done
+drift process get started
+drift process done
+scat process get started
+47.83653676948408
+scattering process done
+drift process get started
+drift process done
+scat process get started
+40.986558729472485
+scattering process done
+drift process get started
+drift process done
+scat process get started
+47.129696580205895
+scattering process done
+drift process get started
+drift process done
+scat process get started
+34.697980036325795
+scattering process done
+drift process get started
+drift process done
+scat process get started
+34.00450075234286
+scattering process done
+drift process get started
+drift process done
+scat process get started
+33.50513725224721
+scattering process done
+drift process get started
+drift process done
+scat process get started
+56.42138378090784
+scattering process done
+drift process get started
+drift process done
+scat process get started
+88.86308449670635
+scattering process done
+drift process get started
+drift process done
+scat process get started
+82.94862868502621
+scattering process done
+drift process get started
+drift process done
+scat process get started
+65.72088437073724
+scattering process done
+drift process get started
+drift process done
+scat process get started
+36.958856993694106
+scattering process done
+drift process get started
+drift process done
+scat process get started
+12.993844104656604
+scattering process done
+drift process get started
+drift process done
+scat process get started
+11.289262338239459
+scattering process done
+drift process get started
+drift process done
+scat process get started
+17.872869206175704
+scattering process done
+drift process get started
+drift process done
+scat process get started
+12.23315390378326
+scattering process done
+drift process get started
+drift process done
+scat process get started
+21.42818008929607
+scattering process done
+drift process get started
+drift process done
+scat process get started
+42.06129657380384
+scattering process done
+drift process get started
+drift process done
+scat process get started
+42.88144293520281
+scattering process done
+drift process get started
+drift process done
+scat process get started
+65.51323557920853
+scattering process done
+drift process get started
+drift process done
+scat process get started
+46.10534681065003
+scattering process done
+drift process get started
+drift process done
+scat process get started
+43.787184326808884
+scattering process done
+drift process get started
+drift process done
+scat process get started
+26.48044425793307
+scattering process done
+drift process get started
+drift process done
+scat process get started
+22.764723726037513
+scattering process done
+drift process get started
+drift process done
+scat process get started
+27.302233490785113
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.103153350049986
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8.372237624480084
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.9501829423518338
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.957249368585206
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.5320465960294802
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.2453968167970824
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.8954537571612535
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6570928313545212
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.67971530176636
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8.127253230513121
+scattering process done
+drift process get started
+drift process done
+scat process get started
+14.673820397570632
+scattering process done
+drift process get started
+drift process done
+scat process get started
+15.67410637103999
+scattering process done
+drift process get started
+drift process done
+scat process get started
+24.528836544479056
+scattering process done
+drift process get started
+drift process done
+scat process get started
+23.32202798901687
+scattering process done
+drift process get started
+drift process done
+scat process get started
+45.98201727176634
+scattering process done
+drift process get started
+drift process done
+scat process get started
+39.210474140358315
+scattering process done
+drift process get started
+drift process done
+scat process get started
+17.679282771880608
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.4433386643884765
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.567395270253988
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.935823616077288
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.7298546212480215
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.246049483683432
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.473050307237171
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.463110036914628
+scattering process done
+drift process get started
+drift process done
+scat process get started
+12.766619118206233
+scattering process done
+drift process get started
+drift process done
+scat process get started
+14.250517923229818
+scattering process done
+drift process get started
+drift process done
+scat process get started
+20.41490792354508
+scattering process done
+drift process get started
+drift process done
+scat process get started
+37.489040069204684
+scattering process done
+drift process get started
+drift process done
+scat process get started
+31.217296399184974
+scattering process done
+drift process get started
+drift process done
+scat process get started
+52.84344008010539
+scattering process done
+drift process get started
+drift process done
+scat process get started
+65.53605455283531
+scattering process done
+drift process get started
+drift process done
+scat process get started
+106.04047586429971
+scattering process done
+drift process get started
+drift process done
+scat process get started
+179.49482292548933
+scattering process done
+drift process get started
+drift process done
+scat process get started
+168.2936983943536
+scattering process done
+drift process get started
+drift process done
+scat process get started
+317.4669589326027
+scattering process done
+drift process get started
+drift process done
+scat process get started
+480.5194396052183
+scattering process done
+drift process get started
+drift process done
+scat process get started
+424.67410806971236
+scattering process done
+drift process get started
+drift process done
+scat process get started
+347.9257474127138
+scattering process done
+drift process get started
+drift process done
+scat process get started
+195.3331446595156
+scattering process done
+drift process get started
+drift process done
+scat process get started
+318.35791515640676
+scattering process done
+drift process get started
+drift process done
+scat process get started
+28.40636608929972
+scattering process done
+drift process get started
+drift process done
+scat process get started
+36.548859318194026
+scattering process done
+drift process get started
+drift process done
+scat process get started
+31.33866526261426
+scattering process done
+drift process get started
+drift process done
+scat process get started
+32.122773692240884
+scattering process done
+drift process get started
+drift process done
+scat process get started
+51.06829484760503
+scattering process done
+drift process get started
+drift process done
+scat process get started
+63.0293702363102
+scattering process done
+drift process get started
+drift process done
+scat process get started
+119.5961159781625
+scattering process done
+drift process get started
+drift process done
+scat process get started
+135.4281511728482
+scattering process done
+drift process get started
+drift process done
+scat process get started
+209.96482164032432
+scattering process done
+drift process get started
+drift process done
+scat process get started
+264.90895971478193
+scattering process done
+drift process get started
+drift process done
+scat process get started
+447.2835440660461
+scattering process done
+drift process get started
+drift process done
+scat process get started
+581.7332235283236
+scattering process done
+drift process get started
+drift process done
+scat process get started
+622.3043430411939
+scattering process done
+drift process get started
+drift process done
+scat process get started
+525.6487443843586
+scattering process done
+drift process get started
+drift process done
+scat process get started
+792.1702492784915
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1402.5539598920868
+scattering process done
+drift process get started
+drift process done
+scat process get started
+615.3787319909551
+scattering process done
+drift process get started
+drift process done
+scat process get started
+683.9050705403748
+scattering process done
+drift process get started
+drift process done
+scat process get started
+751.4102476198427
+scattering process done
+drift process get started
+drift process done
+scat process get started
+617.4825381472369
+scattering process done
+drift process get started
+drift process done
+scat process get started
+634.0481292438193
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1054.769624630677
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1117.4028416977621
+scattering process done
+drift process get started
+drift process done
+scat process get started
+889.2485199564272
+scattering process done
+drift process get started
+drift process done
+scat process get started
+912.1951956793783
+scattering process done
+drift process get started
+drift process done
+scat process get started
+881.7616471548531
+scattering process done
+drift process get started
+drift process done
+scat process get started
+778.0444101825169
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1456.291741201525
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1372.2692425380064
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1875.3784223585612
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1190.014212032051
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1942.9085273812334
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2714.340867355742
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1756.3591552560654
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1677.6287508864816
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1736.819946237399
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1997.2555897599862
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2704.2276783079537
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5253.856761415513
+scattering process done
+drift process get started
+drift process done
+scat process get started
+9435.298983112862
+scattering process done
+drift process get started
+drift process done
+scat process get started
+17671.524426814227
+scattering process done
+drift process get started
+drift process done
+scat process get started
+18889.52958445521
+scattering process done
+drift process get started
+drift process done
+scat process get started
+14999.981637691684
+scattering process done
+drift process get started
+drift process done
+scat process get started
+21779.0687255419
+scattering process done
+drift process get started
+drift process done
+scat process get started
+26336.318322999294
+scattering process done
+drift process get started
+drift process done
+scat process get started
+48888.09073638343
+scattering process done
+drift process get started
+drift process done
+scat process get started
+22489.500902479238
+scattering process done
+drift process get started
+drift process done
+scat process get started
+21931.290969913964
+scattering process done
+drift process get started
+drift process done
+scat process get started
+35580.371986647784
+scattering process done
+drift process get started
+drift process done
+scat process get started
+49453.23376136915
+scattering process done
+drift process get started
+drift process done
+scat process get started
+85387.02744766153
+scattering process done
+drift process get started
+drift process done
+scat process get started
+156464.8297158483
+scattering process done
+drift process get started
+drift process done
+scat process get started
+81983.6262061366
+scattering process done
+drift process get started
+drift process done
+scat process get started
+159391.4993745716
+scattering process done
+drift process get started
+drift process done
+scat process get started
+176675.81625541704
+scattering process done
+drift process get started
+drift process done
+scat process get started
+215214.15859034527
+scattering process done
+drift process get started
+drift process done
+scat process get started
+325744.10288034665
+scattering process done
+drift process get started
+drift process done
+scat process get started
+261847.41537384965
+scattering process done
+drift process get started
+drift process done
+scat process get started
+269762.1702946006
+scattering process done
+drift process get started
+drift process done
+scat process get started
+322170.80215045065
+scattering process done
+drift process get started
+drift process done
+scat process get started
+307846.96532090154
+scattering process done
+drift process get started
+drift process done
+scat process get started
+595356.415076148
+scattering process done
+drift process get started
+drift process done
+scat process get started
+512932.0286959682
+scattering process done
+drift process get started
+drift process done
+scat process get started
+626739.3384123858
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2437993086962493e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+960781.9331521142
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2369614521169197e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3132145226763396e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.521295558181562e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.6837564877631033e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.912159264569432e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2095675725053695e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3131027667192784e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2754508151152222e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3044318674690921e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+596592.2860265807
+scattering process done
+drift process get started
+drift process done
+scat process get started
+610672.9476041057
+scattering process done
+drift process get started
+drift process done
+scat process get started
+393102.49100663065
+scattering process done
+drift process get started
+drift process done
+scat process get started
+501602.3435982498
+scattering process done
+drift process get started
+drift process done
+scat process get started
+315586.4861386642
+scattering process done
+drift process get started
+drift process done
+scat process get started
+513001.1054410889
+scattering process done
+drift process get started
+drift process done
+scat process get started
+320893.62027527665
+scattering process done
+drift process get started
+drift process done
+scat process get started
+372407.34364848543
+scattering process done
+drift process get started
+drift process done
+scat process get started
+497655.4519559164
+scattering process done
+drift process get started
+drift process done
+scat process get started
+597941.4853671931
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.0516133560605582e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.1924046300053322e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.1464729953187902e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.993538729278283e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+950457.0372498162
+scattering process done
+drift process get started
+drift process done
+scat process get started
+502806.6054989911
+scattering process done
+drift process get started
+drift process done
+scat process get started
+731403.1261378264
+scattering process done
+drift process get started
+drift process done
+scat process get started
+410822.14914715325
+scattering process done
+drift process get started
+drift process done
+scat process get started
+360459.6530003173
+scattering process done
+drift process get started
+drift process done
+scat process get started
+378287.62337502884
+scattering process done
+drift process get started
+drift process done
+scat process get started
+232032.41529104856
+scattering process done
+drift process get started
+drift process done
+scat process get started
+419114.38815418596
+scattering process done
+drift process get started
+drift process done
+scat process get started
+813666.7603216011
+scattering process done
+drift process get started
+drift process done
+scat process get started
+564728.408440613
+scattering process done
+drift process get started
+drift process done
+scat process get started
+616521.2209328577
+scattering process done
+drift process get started
+drift process done
+scat process get started
+296933.1438001125
+scattering process done
+drift process get started
+drift process done
+scat process get started
+308974.1577975067
+scattering process done
+drift process get started
+drift process done
+scat process get started
+355453.72033837234
+scattering process done
+drift process get started
+drift process done
+scat process get started
+652185.515314419
+scattering process done
+drift process get started
+drift process done
+scat process get started
+687186.6716978855
+scattering process done
+drift process get started
+drift process done
+scat process get started
+734027.2255960646
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2478336771334386e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.0776762012890675e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+170495.11833029217
+scattering process done
+drift process get started
+drift process done
+scat process get started
+148175.18697673347
+scattering process done
+drift process get started
+drift process done
+scat process get started
+253055.53296688735
+scattering process done
+drift process get started
+drift process done
+scat process get started
+411294.8926461429
+scattering process done
+drift process get started
+drift process done
+scat process get started
+353332.99029703974
+scattering process done
+drift process get started
+drift process done
+scat process get started
+433860.9087374854
+scattering process done
+drift process get started
+drift process done
+scat process get started
+691710.3454191426
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2370763249441884e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.204592036650723e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+505034.01584271056
+scattering process done
+drift process get started
+drift process done
+scat process get started
+492597.6891848261
+scattering process done
+drift process get started
+drift process done
+scat process get started
+630202.5062828079
+scattering process done
+drift process get started
+drift process done
+scat process get started
+300865.6752685726
+scattering process done
+drift process get started
+drift process done
+scat process get started
+305357.1985578204
+scattering process done
+drift process get started
+drift process done
+scat process get started
+413779.7563251873
+scattering process done
+drift process get started
+drift process done
+scat process get started
+370921.79628289107
+scattering process done
+drift process get started
+drift process done
+scat process get started
+696513.214574428
+scattering process done
+drift process get started
+drift process done
+scat process get started
+639383.6801089855
+scattering process done
+drift process get started
+drift process done
+scat process get started
+594622.4257948784
+scattering process done
+drift process get started
+drift process done
+scat process get started
+809294.0799191338
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2324636067955624e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+930650.9288248991
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5829895965323176e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+807978.4684231795
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3159861348312555e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+681640.2581691021
+scattering process done
+drift process get started
+drift process done
+scat process get started
+483969.99306954106
+scattering process done
+drift process get started
+drift process done
+scat process get started
+460009.64980417694
+scattering process done
+drift process get started
+drift process done
+scat process get started
+737640.995869102
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3161784414042318e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.0904223900332868e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.1662853606003085e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+238605.98929290008
+scattering process done
+drift process get started
+drift process done
+scat process get started
+443372.38813005236
+scattering process done
+drift process get started
+drift process done
+scat process get started
+491481.8495942751
+scattering process done
+drift process get started
+drift process done
+scat process get started
+768586.4208812396
+scattering process done
+drift process get started
+drift process done
+scat process get started
+567592.5877961795
+scattering process done
+drift process get started
+drift process done
+scat process get started
+411654.4453192628
+scattering process done
+drift process get started
+drift process done
+scat process get started
+243613.0362305977
+scattering process done
+drift process get started
+drift process done
+scat process get started
+156424.55626532927
+scattering process done
+drift process get started
+drift process done
+scat process get started
+264900.2947167273
+scattering process done
+drift process get started
+drift process done
+scat process get started
+195367.36144623617
+scattering process done
+drift process get started
+drift process done
+scat process get started
+293124.03948024235
+scattering process done
+drift process get started
+drift process done
+scat process get started
+564395.7425836887
+scattering process done
+drift process get started
+drift process done
+scat process get started
+602511.9106720004
+scattering process done
+drift process get started
+drift process done
+scat process get started
+417696.2811107356
+scattering process done
+drift process get started
+drift process done
+scat process get started
+597696.8883108001
+scattering process done
+drift process get started
+drift process done
+scat process get started
+534870.7389208255
+scattering process done
+drift process get started
+drift process done
+scat process get started
+589577.7126115544
+scattering process done
+drift process get started
+drift process done
+scat process get started
+84904.40269405034
+scattering process done
+drift process get started
+drift process done
+scat process get started
+50412.81062681548
+scattering process done
+drift process get started
+drift process done
+scat process get started
+34496.90739681756
+scattering process done
+drift process get started
+drift process done
+scat process get started
+16277.447588203158
+scattering process done
+drift process get started
+drift process done
+scat process get started
+28814.260792576348
+scattering process done
+drift process get started
+drift process done
+scat process get started
+34174.30774485796
+scattering process done
+drift process get started
+drift process done
+scat process get started
+29825.467009360436
+scattering process done
+drift process get started
+drift process done
+scat process get started
+51821.70942926095
+scattering process done
+drift process get started
+drift process done
+scat process get started
+81174.36161935455
+scattering process done
+drift process get started
+drift process done
+scat process get started
+104350.43905891587
+scattering process done
+drift process get started
+drift process done
+scat process get started
+136644.9971523103
+scattering process done
+drift process get started
+drift process done
+scat process get started
+42594.66254724896
+scattering process done
+drift process get started
+drift process done
+scat process get started
+44699.77892193045
+scattering process done
+drift process get started
+drift process done
+scat process get started
+62000.4523596293
+scattering process done
+drift process get started
+drift process done
+scat process get started
+41848.93771246689
+scattering process done
+drift process get started
+drift process done
+scat process get started
+40250.05984854387
+scattering process done
+drift process get started
+drift process done
+scat process get started
+40385.32069602025
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8452.698216949537
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2228.275219610997
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1885.2559456242197
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1959.1405298073882
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2179.350294886529
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3671.286356612566
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5618.961274730618
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6346.622932427606
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4224.311088683442
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5106.231093503751
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6739.997201710428
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8471.821785714454
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7469.031414142262
+scattering process done
+drift process get started
+drift process done
+scat process get started
+10211.594755910997
+scattering process done
+drift process get started
+drift process done
+scat process get started
+15075.457512018133
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3958.221915263278
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4274.6779388022205
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6559.109225863985
+scattering process done
+drift process get started
+drift process done
+scat process get started
+10538.955216897648
+scattering process done
+drift process get started
+drift process done
+scat process get started
+10158.901176060723
+scattering process done
+drift process get started
+drift process done
+scat process get started
+14333.591721435487
+scattering process done
+drift process get started
+drift process done
+scat process get started
+16507.48601726465
+scattering process done
+drift process get started
+drift process done
+scat process get started
+32035.347354914906
+scattering process done
+drift process get started
+drift process done
+scat process get started
+45949.04966017976
+scattering process done
+drift process get started
+drift process done
+scat process get started
+70194.17894515437
+scattering process done
+drift process get started
+drift process done
+scat process get started
+126005.32373276372
+scattering process done
+drift process get started
+drift process done
+scat process get started
+21581.57086962605
+scattering process done
+drift process get started
+drift process done
+scat process get started
+32630.10001134192
+scattering process done
+drift process get started
+drift process done
+scat process get started
+38585.1427475834
+scattering process done
+drift process get started
+drift process done
+scat process get started
+31820.563994240234
+scattering process done
+drift process get started
+drift process done
+scat process get started
+37376.59421908333
+scattering process done
+drift process get started
+drift process done
+scat process get started
+62065.43699278641
+scattering process done
+drift process get started
+drift process done
+scat process get started
+117541.61303570983
+scattering process done
+drift process get started
+drift process done
+scat process get started
+127866.40577419045
+scattering process done
+drift process get started
+drift process done
+scat process get started
+228589.52918512668
+scattering process done
+drift process get started
+drift process done
+scat process get started
+347120.9290641777
+scattering process done
+drift process get started
+drift process done
+scat process get started
+476429.3054142745
+scattering process done
+drift process get started
+drift process done
+scat process get started
+567343.1729444376
+scattering process done
+drift process get started
+drift process done
+scat process get started
+554700.0933237795
+scattering process done
+drift process get started
+drift process done
+scat process get started
+689810.9147207782
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3524340465251142e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.697747124647707e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.502400046681361e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.539725077263326e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.1146334448934887e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.1902500573054873e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.710364073216051e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.689531221384736e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.517284051995413e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8.065538975318838e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5921958642173143e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.461507805157598e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.293880738006484e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8.191642627551039e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.1871428969614068e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5802463082710575e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.7401897435130283e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.29702992800087e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.536345498169135e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.09510842935719e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2883544918004781e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.861184416920242e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.92888884925754e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.802571699649962e6
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.0140606077146634e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.710139245614612e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.910904863183788e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.263619672888227e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.603224867249499e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.196064687446374e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.994254417454218e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.545156393945359e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+9.881879390312617e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.5750494038275324e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.889822861198609e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.171784613000834e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.8791004561639644e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.958753939185204e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.045708145101018e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.794901168004804e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.924459432736581e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.925113062162903e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+9.331149338783064e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.231871968973123e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.429195369246732e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.570144309938426e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.2672163102300927e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.478609164700116e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.280134039862263e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.1392024397480804e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5945330685619506e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.642691732663075e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.2833039125361833e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.0145171643845037e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6448787195443678e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.5772304148064636e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.280219689790907e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.771197411508333e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.283233507358e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2111785225916772e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.0820362487434867e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.4320761964732477e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6864977187274743e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.869345252798035e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.376974255930093e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3505680870313442e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.1134118524724886e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.6379024346268594e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.2489768529356277e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.881685716488058e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.8399051935286677e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.563691497718371e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.670701516591958e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.1005097200059175e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6232372233177143e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.4792849298668438e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.88789324852328e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.0390781648733813e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.3834701819609964e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.8262946556859636e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.428111822490299e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.4629817576482165e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.843033501008693e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.024536909481125e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.2501992199006814e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8.838308992714211e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.4498862278563446e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6783936852488026e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.728832564737287e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.567786437570419e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.1448237296484587e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.8064523242105737e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.5081331240878874e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.565297947414663e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.235847035518033e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+9.67049272700531e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.705261612183172e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.032019913989248e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3494598552614017e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.156898144425539e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.249127684748003e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6853599035916317e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.4052140111586177e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5413389510137132e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.702912957228583e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.6858537821388744e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.644478564669097e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.102434848991521e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.530343249912456e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.63121980990358e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.451962193891439e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.2697900336035207e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.9619686296885047e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.0163018960845254e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.765585168552397e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+9.372746371339424e7
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.1440254035531054e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.7464117230669504e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.5840821495002565e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6921744658964336e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.66160416541741e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.754474988489701e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.536836081053608e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.918477460553983e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.72671262538994e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.117458347216101e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.26165250353937e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.2406417235235924e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.6842562829715568e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.1356544877313557e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.1150886072213644e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.116733767107443e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.222247830413584e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.133544324333085e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.049903351936423e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.9065408428213024e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.684186001787777e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.447331689906187e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.6581540082288176e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8.525165778255041e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3845733780502222e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.3332586076738748e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.4945033284813094e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.075151655264734e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.5472807732974297e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.2285155072485113e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.339902041295701e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.515689737462158e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.877419115995452e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.633946956035984e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.7844300982971686e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.057456084944069e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.796257690655029e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.484034215011047e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.407113040178608e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.364173767580177e8
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.0350432523577672e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.7759394845083025e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.7026635794607096e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.565042383858492e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.896754435014043e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3034554664246061e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5245298105507275e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.640305719624839e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.6704727332455896e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.0851420043249252e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.1513240447786964e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.9671832760509396e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.45703986811891e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.4766472267329094e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.3534735946697754e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.022931581773483e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.648335393576966e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.765492227396662e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.12286708246087e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.147763717734658e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.85904957596811e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.19129488355394e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.559563547239798e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.446229579213173e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+8.772725013754238e9
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2542441333192333e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.2904281554656338e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.6863643616838135e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.8445973608432285e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.4935844879808453e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.5146607380907055e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.3796606714065132e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.760309186200864e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.2657951492448875e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.727435904128714e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3321562143399315e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.9037274666647177e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6653190881034207e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.912023561407178e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.2783242627060376e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.8081370850345654e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5821870286948993e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.038777136921385e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.9004087172017334e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.169629929128235e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.929838394366681e10
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.4278210003319336e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.1260337382316919e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.0211296516001038e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.4758277135418417e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.8146687796176147e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3237232409332089e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.5475631915546204e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.3997712884232935e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.561041324378944e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.855659824258542e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.1405526535669196e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.0966340043445166e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.030318947348951e11
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3806648108579783e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.682332920440773e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.0074919312866313e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.994290258862556e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.3391872592345273e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.879743093640242e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.95076919513878e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.405348332261897e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.388782067889023e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.606117708287529e12
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.0734376756348229e13
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.4802930650736346e13
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.8219718603538688e13
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.6527362981291652e13
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.716412965780361e13
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.6803304810623055e13
+scattering process done
+drift process get started
+drift process done
+scat process get started
+7.191962023316658e13
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.3978745085867697e14
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.2930459773846867e14
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.1864351721255488e14
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.779586352151137e14
+scattering process done
+drift process get started
+drift process done
+scat process get started
+4.8703833737197425e14
+scattering process done
+drift process get started
+drift process done
+scat process get started
+5.5625148836332725e14
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.85396863668948e14
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.1322937489445908e15
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.5339442586855042e15
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.4756594715968265e15
+scattering process done
+drift process get started
+drift process done
+scat process get started
+2.793292875400238e15
+scattering process done
+drift process get started
+drift process done
+scat process get started
+3.6592259608402445e15
+scattering process done
+drift process get started
+drift process done
+scat process get started
+6.592231834309727e15
+scattering process done
+drift process get started
+drift process done
+scat process get started
+1.134513128814155e16

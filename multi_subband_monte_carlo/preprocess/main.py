@@ -4,6 +4,7 @@ from fenics import *
 from multi_subband_monte_carlo.preprocess import schrodinger
 from multi_subband_monte_carlo.preprocess import density
 from multi_subband_monte_carlo.preprocess import poisson
+from multi_subband_monte_carlo.preprocess import electric_fieled
 from multi_subband_monte_carlo.plot import plotter
 
 import sys
@@ -67,11 +68,12 @@ def main(constant, device, mesh, dopant):
         electron_distribution.vector()[:] = np.array([i for i in electron_density_flat])  
 
         iterate  = iterate + 1
-        
+
+    efield = electric_fieled.electricField(potential, device)   
     #================================================================#
     # pre process got done!
     end = time.time()
     print("elpsed_time:{}".format(end - start) + "[sec]")
 
-    return potential, wavefunction, eigenvalue_dict, electron_density
+    return potential, wavefunction, eigenvalue_dict, electron_density, efield
 

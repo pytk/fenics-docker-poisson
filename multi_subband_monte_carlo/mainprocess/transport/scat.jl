@@ -1,4 +1,5 @@
-function scat(particle, device, scattering_rate)
+include("./../initialization/scattering_rate.jl")
+function scat(particle, device)
     #=
     Args: 
         - particle: Dict{Int32, Dict{String, Float64}}
@@ -15,32 +16,40 @@ function scat(particle, device, scattering_rate)
             - scattering_rate: Dict{Int32, Dict{Int32, Dict{Int32, Array{Float64, scattering_number}}}}
                 - scattering_rate[nx][subband][energy]
     =#
+    println("scat process get started")
 
     kx = particle["kx"]
     ky = particle["ky"]
     kz = particle["kz"]
 
-    x = trunc(Int, particle["x"]/dx)+1
+    dx = device["dx"]
+    dz = device["dz"]
+
+    x = particle["x"]
+    x = trunc(Int, x/dx)+1
+
     subband = particle["subband"]
 
-    de = device["energy_step"]
-    ne = device["number_of_energy"]
-
-    number_of_scat = device["number_of_scat"]
+    # energy step to calculate scattering rate from 0.0 eV to 1.0 eV per 0.001 eV
+    # WARNING: if you wanna change this value you have to change same stuff also in scattering_rate process
+    de = 0.001
+    ne = 1000
 
     # effective mass in L band
-    m = device["electron_effective_mass"]
+    m = device["material"]["electron_effective_mass"]
 
     phonon_energy = device["material"]["phonon_energy"]
 
     # Dirac's constant (Js)
-    ħ = 1.054571800*10^-34
+    ħ = 1.054571800 * 10^-15
 
     k = kx^2 + ky^2 + kz^2
     superparticle_energy = (ħ^2)*k/(2m)
 
-    if superparticle_energy <= 0.0 return end
+    if superparticle_energy <= 0.0 return particle end
+    println(superparticle_energy)
     ie = trunc(Int, superparticle_energy/de)+1
+
     if ie > ne ie = ne end
 
     # select scattering process
@@ -60,7 +69,12 @@ function scat(particle, device, scattering_rate)
     # emission
     elseif r <= scattering_rate[x][subband][ie][3]
         final_energy = superparticle_energy - phonon_energy
-
+    else
+        println("x: ", x)
+        println("subband: ", subband)
+        println("ie: ", ie)
+        println("r: ", r)
+        println(scattering_rate[x][subband][ie][3])
     end
     #==================================#
 
@@ -83,7 +97,7 @@ function scat(particle, device, scattering_rate)
     particle["kx"] = kx
     particle["ky"] = ky
     particle["kz"] = kz
-
+    println("scattering process done")
     return particle
 
 end

@@ -25,7 +25,7 @@ function initializeParticle(electron_density, device, Gm, eigen_values, constant
 
     # constant value
 
-    # Boltzman constant (JK^-1)
+    # Boltzman constant (eVK^-1)
     kb = 8.6173303*10^-5
 
     # device temperture
@@ -35,7 +35,7 @@ function initializeParticle(electron_density, device, Gm, eigen_values, constant
     # effective mass in L band
     m = device["material"]["electron_effective_mass"]
 
-    # Dirac's constant (Js)
+    # Dirac's constant (eVs)
     ħ = 6.582119514*10^-16
 
     particle_number = 0
@@ -84,6 +84,9 @@ function initializeParticle(electron_density, device, Gm, eigen_values, constant
                 ts = -log(rand())/Gm[trunc(Int, x/dx)+1][1]
 
                 # When it comes to z-axis in wave space, it depends on the position of particle. if a particle is within under the gate, the particle would be 2d electron
+                kz = √(2m*eigen_values[1][i])/ħ
+                subband = 1
+                #=
                 if gate_ini <= x && x <= gate_fin
                     kz = √(2m*eigen_values[1][i])/ħ
                     subband = 1
@@ -91,6 +94,7 @@ function initializeParticle(electron_density, device, Gm, eigen_values, constant
                     kz = k*cosθ
                     subband = 8
                 end
+                =#
 
                 # build the new particle information as julia dictionaly
                 dict = Dict("subband" => subband, "kx" => kx, "ky" => ky, "kz" => kz, "ts" => ts, "x" => x, "z" => z)

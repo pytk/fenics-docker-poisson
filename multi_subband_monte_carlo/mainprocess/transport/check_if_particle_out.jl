@@ -26,6 +26,9 @@ function checkIfParticleOut(particle, device)
     kx = particle["kx"]
     kz = particle["kz"]
 
+    xfi = device["xfi"]
+    zfi = device["zfi"]
+
     subband = particle["subband"]
 
     src = device["src"]
@@ -34,19 +37,19 @@ function checkIfParticleOut(particle, device)
     gate_ini = device["gate_ini"]
     gate_fin = device["gate_fin"]
 
-    x = trunc(Int, particle["x"]/dx + 1.5)
-    z = trunc(Int, particle["z"]/dz + 1.5)
+    x = particle["x"]
+    z = particle["z"]
 
     # check if a particle is going out from the right or left edge of the device
     if x < 0
         x = -x
         kx = -kx
-    elseif x > nx+1
-        x = nx - (x - nx)
+    elseif x > xfi
+        x = xfi - (x - xfi)
         kx = -kx
     end
 
-    if j < 0
+    if z < 0
         if x < src || x > doner
             subband = 9
         elseif x > gate_ini && x < gate_fin
@@ -56,7 +59,7 @@ function checkIfParticleOut(particle, device)
             kz = -kz
         end
     elseif z > nz
-        z = nz - (z-nz)
+        z = zfi - (z-zfi)
         kz = -kz
     end
 

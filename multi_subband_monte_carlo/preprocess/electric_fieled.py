@@ -16,7 +16,7 @@ def electricField(potential, device):
     # dimention of rectangle mesh
     electric_field = {}
 
-    for index in range(device.ny + 1):
+    for index in range(device.nz + 1):
         x_potential = potential[index, :]
 
         gradient_potential = np.gradient(x_potential)

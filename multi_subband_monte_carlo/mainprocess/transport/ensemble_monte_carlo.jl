@@ -3,7 +3,7 @@ include("./drift.jl")
 include("./scat.jl")
 include("./electron_charge.jl")
 
-function ensembleMonteCarlo(particles, device, Gm, density, scattering_rate, current_time)
+function ensembleMonteCarlo(particles, device, electron_density, current_time, electric_field, Gm)
     #=
     Args:
         - particle: Dict{Int32, Dict{String, Float64}}
@@ -50,19 +50,16 @@ function ensembleMonteCarlo(particles, device, Gm, density, scattering_rate, cur
     # initial particle number for accessing Julia dictionaly
     particle_number = 1
 
-    println("loop for each particle get started!!!!!!")
-
     while true
         # copy of all particle information
         println("current particle number is ", particle_number)
         temp_particle = particles[particle_number]
         temp_time = current_time
         while temp_particle["ts"] <= time
-            println(temp_particle["ts"])
             τ = temp_particle["ts"] - temp_time
 
             # drift process from the point to other point that particle can move during the free flight time and update only particle position
-            temp_particle = drift(τ, temp_particle)
+            temp_particle = drift(τ, temp_particle, device, electric_field)
 
             # just take the x position and z position after drift process
             i = trunc(Int, temp_particle["x"]/dx)+1
@@ -74,7 +71,7 @@ function ensembleMonteCarlo(particles, device, Gm, density, scattering_rate, cur
             if j >= nz j=nz end
 
             # scat process where a scat will get energy of particle changed based on the scattering rate on the particle's position and update only particle energy
-            temp_particle = scat(temp_particle, device, scattering_rate)
+            temp_particle = scat(temp_particle, device)
             temp_time = temp_particle["ts"]
 
             # set next happen scat time from random value and subband the particle belong to
@@ -85,8 +82,8 @@ function ensembleMonteCarlo(particles, device, Gm, density, scattering_rate, cur
 
         τ = time - temp_time
 
-        # TODO: function to calculate drift process which update particle information
-        temp_particle = drift(τ, temp_particle)
+        # TODO: add electric_field
+        temp_particle = drift(τ, temp_particle, device, electric_field)
 
         if temp_particle["subband"] != 9
             particles[particle_number] = temp_particle

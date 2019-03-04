@@ -14,6 +14,7 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
         return scattering rate for each enrgy step.
         you can access specific value like scattering_rate[energy]['scat_name']['subband_number']
     =#
+
     nx = device["nx"]
     nz = device["nz"]
     subband_number = device["subband_number"]
@@ -62,10 +63,12 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
 
     # calculate Gnm and φ which is required to calculate scattering rate for each kind of scattering that's why I compute these constant for each of first step of calculating scattering rate for each step
     # we have to make dictionary for each loop and get integrated finally
-    each_slice = Dict{Int32, Dict{Int32, Dict{Float64, Array{Float64, 1}}}}()
+    #scattering_rate = Dict{Int32, Dict{Int32, Dict{Float64, Array{Float64, 1}}}}()
+    # store.jl is a module to store global variable
+    each_slice_scattering_rate = Dict{Int32, Dict{Int32, Dict{Int32, Array{Float64, 1}}}}()
     each_slice_Gm = Dict{Int32, Dict{Int32, Float64}}()
     for x in 1:nx+1
-        each_subband = Dict{Int32, Dict{Float64, Array{Float64, 1}}}()
+        each_subband = Dict{Int32, Dict{Int32, Array{Float64, 1}}}()
         each_subband_Gm = Dict{Int32, Float64}()
         each_subband_Gnm = Dict{Int32, Float64}()
         for subband in 1:subband_number
@@ -87,7 +90,7 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
             each_subband_Gnm[subband] = φ
 
             # compute each type of scattering rate
-            each_energy = Dict{Float64, Array{Float64, 1}}()
+            each_energy = Dict{Int32, Array{Float64, 1}}()
 
             # Array to normalize scattering rate by calculatin sum of final number of scat
             final_number_of_scat = Array{Float64, 1}(undef, 0)
@@ -118,6 +121,7 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
 
                 # this is speacial only for final number of scat
                 push!(final_number_of_scat, scattring_rate_temp)
+                energy = trunc(Int, energy/de)+1
                 each_energy[energy] = each_scat
             end
 
@@ -126,13 +130,17 @@ function getScatteringRate(wavefunction, eigen_values, device, constant)
             # this is for initialize each particle info in initialize.jl         
             each_subband_Gm[subband] = max_scattering_rate
             for energy in 0:de:energies
+                energy = trunc(Int, energy/de)+1
                 each_energy[energy] = map(each_energy[energy]) do el el/max_scattering_rate end
             end
             each_subband[subband] = each_energy
         end
-        each_slice[x] = each_subband
+        # scattering rate is a global variable
+        each_slice_scattering_rate[x] = each_subband
         each_slice_Gm[x] = each_subband_Gm
     end
+    global scattering_rate
+    scattering_rate = each_slice_scattering_rate
     println("scattering rate done!!!!!!!!!!!!!!!!!!")
-    return each_slice, each_slice_Gm
+    return each_slice_Gm
 end

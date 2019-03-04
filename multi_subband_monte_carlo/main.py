@@ -87,10 +87,10 @@ def main():
     dopant = device.craeteChargeDistribution(doner, constant)
 
     # preprocess get started, which is a self consistent loop for schrodinger-poisson
-    electron_potential, wave_functions, eigen_values, electron_density = preprocess.main(constant, device, mesh, dopant)
+    electron_potential, wave_functions, eigen_values, electron_density, electric_field = preprocess.main(constant, device, mesh, dopant)
 
     # main process get started, which is a self consistent loop for schrodinger-poisson, boltzman transport equation and scattering process based on felmi's golden rule
-    mainprocess.multiSubBand(electron_potential, wave_functions, eigen_values, electron_density, mesh, device, constant)
+    mainprocess.multiSubBand(electric_field, wave_functions, eigen_values, electron_density, mesh, device, constant)
     print("All of the processes has done!")
     
 # whole process get started

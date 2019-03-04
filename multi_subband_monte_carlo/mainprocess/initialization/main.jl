@@ -13,9 +13,10 @@ function initialize(device, wave_function, eigen_values, electron_density, const
     Return:
         - particle (julia dictionaly)
     =#
-    each_slice, each_slice_Gm = getScatteringRate(wave_function, eigen_values, device, constant)
+    # scattering_rate has too much size so we have to make it global variable and then access it without passing data as args (scattering_rate means each slice scattering_rate)
+    each_slice_Gm = getScatteringRate(wave_function, eigen_values, device, constant)
 
     particles = initializeParticle(electron_density, device, each_slice_Gm, eigen_values, constant)
 
-    return particles, each_slice, each_slice_Gm
+    return particles, each_slice_Gm
 end

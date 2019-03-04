@@ -1,6 +1,6 @@
 include("./check_if_particle_out.jl")
 
-function drift(τ, particle, device, electron_field)
+function drift(τ, particle, device, electric_field)
     #=
     Note: This doesn't include non-prabolicityt
 
@@ -10,15 +10,17 @@ function drift(τ, particle, device, electron_field)
         - device: Object
         - electric_filed: python dictionaly Dict{Int32, Array{Float64, 1}}
     =#
+    println("drift process get started")
+
     # effective mass in L band
-    m = device["electron_effective_mass"]
+    m = device["material"]["electron_effective_mass"]
 
     # Dirac's constant (Js)
-    ħ = 1.054571800*10^-34
+    ħ = 6.582119514*10^-16
 
     e = 1.6021766208*10^-19
 
-    F = electric_filed
+    F = electric_field
 
     # dx , dz
     dx = device["dx"]
@@ -41,19 +43,17 @@ function drift(τ, particle, device, electron_field)
     if j <= 1 j=1 end
     if i >= nx i=nx end
     if j >= nz j=nz end
-
     # electron drift process
-    dkx =  e*F[j]*τ/ħ
+    dkx =  e*F[j][i]*τ/ħ
 
     # calculate group velocity along with x-axis. parhaps, It must be considered z-axis
     particle["x"] = x + ħ/m*τ*(kx+0.5*dkx)
     particle["z"] = z + ħ*kz/m*τ
 
     particle["kx"] = kx+dkx
-
     # check if particle goes out from device range
     particle = checkIfParticleOut(particle, device)
-
+    println("drift process done")
     return particle
 end
 
